@@ -1,0 +1,509 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		"SwiftyNats::SwiftyNatsPackageTests::ProductTarget" /* SwiftyNatsPackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_67 /* Build configuration list for PBXAggregateTarget "SwiftyNatsPackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_70 /* PBXTargetDependency */,
+			);
+			name = SwiftyNatsPackageTests;
+			productName = SwiftyNatsPackageTests;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		FCEBA4DB204646DD00F724F9 /* NatsClientConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEBA4DA204646DD00F724F9 /* NatsClientConfig.swift */; };
+		FCEBA4DD2046536400F724F9 /* NatsClient+StreamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEBA4DC2046536400F724F9 /* NatsClient+StreamDelegate.swift */; };
+		FCEBA4DF20465AB500F724F9 /* NatsMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEBA4DE20465AB500F724F9 /* NatsMessage.swift */; };
+		OBJ_35 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_41 /* NatsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* NatsClientTests.swift */; };
+		OBJ_43 /* SwiftyNats.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftyNats::SwiftyNats::Product" /* SwiftyNats.framework */; };
+		OBJ_50 /* Data+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Data+String.swift */; };
+		OBJ_51 /* Erorr+Nats.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Erorr+Nats.swift */; };
+		OBJ_52 /* Streams+Read+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Streams+Read+Write.swift */; };
+		OBJ_53 /* String+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* String+Utilities.swift */; };
+		OBJ_54 /* NatsClient+Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* NatsClient+Connection.swift */; };
+		OBJ_55 /* NatsClient+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* NatsClient+Events.swift */; };
+		OBJ_56 /* NatsClient+Publish.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* NatsClient+Publish.swift */; };
+		OBJ_57 /* NatsClient+Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* NatsClient+Subscription.swift */; };
+		OBJ_58 /* NatsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* NatsClient.swift */; };
+		OBJ_59 /* NatsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* NatsEvent.swift */; };
+		OBJ_61 /* NatsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* NatsProtocol.swift */; };
+		OBJ_62 /* NatsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* NatsServer.swift */; };
+		OBJ_64 /* NatsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* NatsSubject.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FCEBA4D82046411700F724F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "SwiftyNats::SwiftyNats";
+			remoteInfo = SwiftyNats;
+		};
+		FCEBA4D92046411800F724F9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "SwiftyNats::SwiftyNatsTest";
+			remoteInfo = SwiftyNatsTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FCEBA4DA204646DD00F724F9 /* NatsClientConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClientConfig.swift; sourceTree = "<group>"; };
+		FCEBA4DC2046536400F724F9 /* NatsClient+StreamDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+StreamDelegate.swift"; sourceTree = "<group>"; };
+		FCEBA4DE20465AB500F724F9 /* NatsMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsMessage.swift; sourceTree = "<group>"; };
+		OBJ_10 /* Erorr+Nats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Erorr+Nats.swift"; sourceTree = "<group>"; };
+		OBJ_11 /* Streams+Read+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streams+Read+Write.swift"; sourceTree = "<group>"; };
+		OBJ_12 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
+		OBJ_14 /* NatsClient+Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Connection.swift"; sourceTree = "<group>"; };
+		OBJ_15 /* NatsClient+Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Events.swift"; sourceTree = "<group>"; };
+		OBJ_16 /* NatsClient+Publish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Publish.swift"; sourceTree = "<group>"; };
+		OBJ_17 /* NatsClient+Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Subscription.swift"; sourceTree = "<group>"; };
+		OBJ_18 /* NatsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClient.swift; sourceTree = "<group>"; };
+		OBJ_19 /* NatsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsEvent.swift; sourceTree = "<group>"; };
+		OBJ_21 /* NatsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsProtocol.swift; sourceTree = "<group>"; };
+		OBJ_22 /* NatsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsServer.swift; sourceTree = "<group>"; };
+		OBJ_24 /* NatsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsSubject.swift; sourceTree = "<group>"; };
+		OBJ_26 /* NatsClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClientTests.swift; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* Data+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+String.swift"; sourceTree = "<group>"; };
+		"SwiftyNats::SwiftyNats::Product" /* SwiftyNats.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftyNats.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"SwiftyNats::SwiftyNatsTest::Product" /* SwiftyNatsTest.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwiftyNatsTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		OBJ_42 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_43 /* SwiftyNats.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		OBJ_13 /* NatsClient */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_18 /* NatsClient.swift */,
+				OBJ_14 /* NatsClient+Connection.swift */,
+				OBJ_15 /* NatsClient+Events.swift */,
+				OBJ_16 /* NatsClient+Publish.swift */,
+				OBJ_17 /* NatsClient+Subscription.swift */,
+				FCEBA4DC2046536400F724F9 /* NatsClient+StreamDelegate.swift */,
+			);
+			path = NatsClient;
+			sourceTree = "<group>";
+		};
+		OBJ_25 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_26 /* NatsClientTests.swift */,
+			);
+			path = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_27 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"SwiftyNats::SwiftyNatsTest::Product" /* SwiftyNatsTest.xctest */,
+				"SwiftyNats::SwiftyNats::Product" /* SwiftyNats.framework */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_25 /* Tests */,
+				OBJ_27 /* Products */,
+			);
+			name = "";
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_13 /* NatsClient */,
+				OBJ_19 /* NatsEvent.swift */,
+				OBJ_21 /* NatsProtocol.swift */,
+				OBJ_22 /* NatsServer.swift */,
+				FCEBA4DE20465AB500F724F9 /* NatsMessage.swift */,
+				OBJ_24 /* NatsSubject.swift */,
+				FCEBA4DA204646DD00F724F9 /* NatsClientConfig.swift */,
+				OBJ_8 /* Extensions */,
+			);
+			name = Sources;
+			path = Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* Data+String.swift */,
+				OBJ_10 /* Erorr+Nats.swift */,
+				OBJ_11 /* Streams+Read+Write.swift */,
+				OBJ_12 /* String+Utilities.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		"SwiftyNats::SwiftPMPackageDescription" /* SwiftyNatsPackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_31 /* Build configuration list for PBXNativeTarget "SwiftyNatsPackageDescription" */;
+			buildPhases = (
+				OBJ_34 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftyNatsPackageDescription;
+			productName = SwiftyNatsPackageDescription;
+			productType = "com.apple.product-type.framework";
+		};
+		"SwiftyNats::SwiftyNats" /* SwiftyNats */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_46 /* Build configuration list for PBXNativeTarget "SwiftyNats" */;
+			buildPhases = (
+				OBJ_49 /* Sources */,
+				OBJ_65 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftyNats;
+			productName = SwiftyNats;
+			productReference = "SwiftyNats::SwiftyNats::Product" /* SwiftyNats.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"SwiftyNats::SwiftyNatsTest" /* SwiftyNatsTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_37 /* Build configuration list for PBXNativeTarget "SwiftyNatsTest" */;
+			buildPhases = (
+				OBJ_40 /* Sources */,
+				OBJ_42 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_44 /* PBXTargetDependency */,
+			);
+			name = SwiftyNatsTest;
+			productName = SwiftyNatsTest;
+			productReference = "SwiftyNats::SwiftyNatsTest::Product" /* SwiftyNatsTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "SwiftyNats" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_27 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				"SwiftyNats::SwiftPMPackageDescription" /* SwiftyNatsPackageDescription */,
+				"SwiftyNats::SwiftyNatsTest" /* SwiftyNatsTest */,
+				"SwiftyNats::SwiftyNats" /* SwiftyNats */,
+				"SwiftyNats::SwiftyNatsPackageTests::ProductTarget" /* SwiftyNatsPackageTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		OBJ_34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_35 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_40 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_41 /* NatsClientTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_49 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_50 /* Data+String.swift in Sources */,
+				FCEBA4DD2046536400F724F9 /* NatsClient+StreamDelegate.swift in Sources */,
+				FCEBA4DF20465AB500F724F9 /* NatsMessage.swift in Sources */,
+				OBJ_51 /* Erorr+Nats.swift in Sources */,
+				OBJ_52 /* Streams+Read+Write.swift in Sources */,
+				OBJ_53 /* String+Utilities.swift in Sources */,
+				OBJ_54 /* NatsClient+Connection.swift in Sources */,
+				OBJ_55 /* NatsClient+Events.swift in Sources */,
+				OBJ_56 /* NatsClient+Publish.swift in Sources */,
+				OBJ_57 /* NatsClient+Subscription.swift in Sources */,
+				OBJ_58 /* NatsClient.swift in Sources */,
+				OBJ_59 /* NatsEvent.swift in Sources */,
+				OBJ_61 /* NatsProtocol.swift in Sources */,
+				FCEBA4DB204646DD00F724F9 /* NatsClientConfig.swift in Sources */,
+				OBJ_62 /* NatsServer.swift in Sources */,
+				OBJ_64 /* NatsSubject.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		OBJ_44 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "SwiftyNats::SwiftyNats" /* SwiftyNats */;
+			targetProxy = FCEBA4D82046411700F724F9 /* PBXContainerItemProxy */;
+		};
+		OBJ_70 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "SwiftyNats::SwiftyNatsTest" /* SwiftyNatsTest */;
+			targetProxy = FCEBA4D92046411800F724F9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4 -I /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		OBJ_33 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 4 -I /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/pm/4 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		OBJ_38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyNats.xcodeproj/SwiftyNatsTest_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = SwiftyNatsTest;
+			};
+			name = Debug;
+		};
+		OBJ_39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyNats.xcodeproj/SwiftyNatsTest_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = SwiftyNatsTest;
+			};
+			name = Release;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		OBJ_47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyNats.xcodeproj/SwiftyNats_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftyNats;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = SwiftyNats;
+			};
+			name = Debug;
+		};
+		OBJ_48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyNats.xcodeproj/SwiftyNats_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftyNats;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGET_NAME = SwiftyNats;
+			};
+			name = Release;
+		};
+		OBJ_68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		OBJ_2 /* Build configuration list for PBXProject "SwiftyNats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_31 /* Build configuration list for PBXNativeTarget "SwiftyNatsPackageDescription" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_32 /* Debug */,
+				OBJ_33 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_37 /* Build configuration list for PBXNativeTarget "SwiftyNatsTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_38 /* Debug */,
+				OBJ_39 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_46 /* Build configuration list for PBXNativeTarget "SwiftyNats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_47 /* Debug */,
+				OBJ_48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_67 /* Build configuration list for PBXAggregateTarget "SwiftyNatsPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_68 /* Debug */,
+				OBJ_69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}
