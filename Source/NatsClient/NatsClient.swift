@@ -32,9 +32,9 @@ class NatsClient: NSObject {
     var eventHandlerStore: [ NatsEvent: Array<() -> Void> ] = [:]
     var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     
-    public init(_ url: String, _ config: NatsClientConfig = NatsClientConfig()) {
+    public init(_ url: String, _ config: NatsClientConfig?) {
         self.url = URL(string: url)!
-        self.config = config
+        self.config = config ?? NatsClientConfig()
         
         writeQueue.maxConcurrentOperationCount = 1
     }

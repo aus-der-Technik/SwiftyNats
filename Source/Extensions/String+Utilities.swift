@@ -7,8 +7,6 @@
 
 import Foundation
 
-extension String: Error { }
-
 extension String {
     
     func removeNewlines() -> String {

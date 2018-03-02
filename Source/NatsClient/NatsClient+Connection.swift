@@ -13,6 +13,8 @@ extension NatsClient: NatsConnection {
     
     public func connect() throws {
         
+        guard self.state != .connected else { return }
+        
         try self.openStream()
         
         self.state = .connected
@@ -47,8 +49,7 @@ extension NatsClient: NatsConnection {
     
     private func openStream() throws {
         
-        guard self.state != .connected else { throw "Error: Connection already exists" }
-        guard let host = self.url.host, let port = self.url.port else { throw "Error: Invalid url provided (\(self.url.absoluteString))" }
+        guard let host = self.url.host, let port = self.url.port else { throw NatsConnectionError("Invalid url provided (\(self.url.absoluteString))") }
         
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
@@ -63,13 +64,13 @@ extension NatsClient: NatsConnection {
         inStream.open()
         outStream.open()
 
-        guard let info = inStream.readStreamWhenReady() else { throw "Error: Problem connecting to server. No response" }
-        guard info.hasPrefix(NatsOperation.info.rawValue) else { throw "Error: Server responded with unexptected result" }
-        guard let config = info.removeNewlines().removePrefix(NatsOperation.info.rawValue).toJsonDicitonary() else { throw "Error: Failed to read server response" }
+        guard let info = inStream.readStreamWhenReady() else { throw NatsConnectionError("Did not get a response from the server") }
+        guard info.hasPrefix(NatsOperation.info.rawValue) else { throw NatsConnectionError("Server responded with unexptected result") }
+        guard let config = info.removeNewlines().removePrefix(NatsOperation.info.rawValue).toJsonDicitonary() else { throw NatsConnectionError("Failed to read server response") }
         
         self.server = NatsServer(config)
         
-        guard let _ = self.server else { throw "Error: Failed to connect to server" }
+        guard let _ = self.server else { throw NatsConnectionError("Failed to connect to server") }
         
         if !self.server!.authRequired{
             return
@@ -82,7 +83,7 @@ extension NatsClient: NatsConnection {
     private func authenticateWithServer(usingInStream inStream: InputStream, andOutStream outStream: OutputStream) throws {
         
         guard let user = self.url.user, let password = self.url.password else {
-            throw "Error: Server authentication requires url with basic authentication"
+            throw NatsConnectionError("Server authentication requires url with basic authentication")
         }
         
         let config = [
@@ -113,7 +114,7 @@ extension NatsClient: NatsConnection {
             }
         }
         
-        throw "Error: Failed to authenticate with nats server"
+        throw NatsConnectionError("Failed to authenticate with nats server")
         
     }
     
