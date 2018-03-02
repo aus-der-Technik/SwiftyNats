@@ -1,8 +1,20 @@
+//
+//  NatsClient.swift
+//  SwiftyNats
+//
+//  Created by Ray Krow on 2/27/18.
+//
+
 import Foundation
 
 enum NatsState {
     case connected
     case disconnected
+}
+
+enum NatsEvent: String {
+    case connected = "connected"
+    case disconnected = "disconnected"
 }
 
 class NatsClient: NSObject {
@@ -17,7 +29,7 @@ class NatsClient: NSObject {
     var outputStream: OutputStream?
     var server: NatsServer?
     var writeQueue = OperationQueue()
-    var eventHandlerStore: [ NatsEventType: Array<(NatsEvent) -> Void> ] = [:]
+    var eventHandlerStore: [ NatsEvent: Array<() -> Void> ] = [:]
     var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     
     public init(_ url: String, _ config: NatsClientConfig = NatsClientConfig()) {
@@ -48,10 +60,9 @@ protocol NatsPublish {
 }
 
 protocol NatsEvents {
-    func on(_ event: NatsEventType, _ handler: @escaping (NatsEvent) -> Void)
+    func on(_ event: NatsEvent, _ handler: @escaping () -> Void)
     
     // Private
-    func fire(_ eventType: NatsEventType)
-    func fire(_ eventType: NatsEventType, _ message: String?)
+    func fire(_ eventType: NatsEvent)
 }
 

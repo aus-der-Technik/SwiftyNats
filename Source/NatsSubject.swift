@@ -1,10 +1,11 @@
 //
 //  NatsSubject.swift
-//  SwiftyNatsPackageDescription
+//  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
 //
 
+import Foundation
 
 struct NatsSubject {
     
@@ -17,7 +18,7 @@ struct NatsSubject {
     }
     
     init(subject: String) {
-        let id = "a random new id"
+        let id = UUID().uuidString
         self.init(subject: subject, id: id)
     }
     

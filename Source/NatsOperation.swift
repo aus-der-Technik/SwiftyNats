@@ -1,12 +1,12 @@
 //
-//  NatsProtocol.swift
-//  SwiftyNatsPackageDescription
+//  NatsOperation.swift
+//  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
 //
 
 
-enum NatsProtocol: String {
+enum NatsOperation: String {
     case connect = "CONNECT"
     case subscribe = "SUB"
     case unsubscribe = "UNSUB"

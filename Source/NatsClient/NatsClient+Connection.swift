@@ -1,12 +1,11 @@
 //
 //  NatsClient+Connection.swift
-//  SwiftyNatsPackageDescription
+//  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
 //
 
 import Foundation
-
 
 extension NatsClient: NatsConnection {
     
@@ -17,7 +16,7 @@ extension NatsClient: NatsConnection {
         try self.openStream()
         
         self.state = .connected
-        self.fire(NatsEventType.connected)
+        self.fire(.connected)
         
         guard let readStream = inputStream, let writeStream = outputStream else { return }
         
@@ -30,23 +29,34 @@ extension NatsClient: NatsConnection {
     }
     
     public func disconnect() {
+        
+        guard let newReadStream = self.inputStream, let newWriteStream = self.outputStream else { return }
+        
+        for stream in [newReadStream, newWriteStream] {
+            stream.delegate = nil
+            stream.remove(from: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
+            stream.close()
+        }
+        
         self.state = .disconnected
+        self.fire(.disconnected)
+        
     }
     
     // MARK - Private Methods
     
     private func openStream() throws {
         
-        guard self.state == .connected else { return }
-        guard let host = self.url.host, let port = self.url.port else { return }
+        guard self.state != .connected else { throw "Error: Connection already exists" }
+        guard let host = self.url.host, let port = self.url.port else { throw "Error: Invalid url provided (\(self.url.absoluteString))" }
         
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
         
         CFStreamCreatePairWithSocketToHost(nil, host as CFString!, UInt32(port), &readStream, &writeStream) // -> send
         
-        inputStream = readStream!.takeRetainedValue()
-        outputStream = writeStream!.takeRetainedValue()
+        self.inputStream = readStream!.takeRetainedValue()
+        self.outputStream = writeStream!.takeRetainedValue()
         
         guard let inStream = inputStream, let outStream = outputStream else { return }
         
@@ -54,8 +64,8 @@ extension NatsClient: NatsConnection {
         outStream.open()
 
         guard let info = inStream.readStreamWhenReady() else { throw "Error: Problem connecting to server. No response" }
-        guard info.hasPrefix(NatsProtocol.info.rawValue) else { throw "Error: Server responded with unexptected result" }
-        guard let config = info.flattenedMessage().removePrefix(NatsProtocol.info.rawValue).convertToDictionary() else { throw "Error: Failed to read server response" }
+        guard info.hasPrefix(NatsOperation.info.rawValue) else { throw "Error: Server responded with unexptected result" }
+        guard let config = info.removeNewlines().removePrefix(NatsOperation.info.rawValue).toJsonDicitonary() else { throw "Error: Failed to read server response" }
         
         self.server = NatsServer(config)
         
@@ -89,13 +99,13 @@ extension NatsClient: NatsConnection {
         let configData = try JSONSerialization.data(withJSONObject: config, options: [])
         
         if let configString = configData.toString() {
-            if let data = "\(NatsProtocol.connect.rawValue) \(configString)\r\n".data(using: String.Encoding.utf8) {
+            if let data = "\(NatsOperation.connect.rawValue) \(configString)\r\n".data(using: String.Encoding.utf8) {
                 
                 outStream.writeStreamWhenReady(data) // -> send
                 
                 if let info = inStream.readStreamWhenReady() { // <- receive
                     
-                    if !info.hasPrefix(NatsProtocol.error.rawValue) {
+                    if !info.hasPrefix(NatsOperation.error.rawValue) {
                         return
                     }
                     

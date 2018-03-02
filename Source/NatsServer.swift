@@ -5,7 +5,6 @@
 //  Created by Ray Krow on 2/27/18.
 //
 
-
 struct NatsServer {
     
     let serverId: String

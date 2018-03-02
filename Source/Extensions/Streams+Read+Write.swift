@@ -1,5 +1,5 @@
 //
-//  Streams+Read.swift
+//  Streams+Read+Write.swift
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
@@ -7,7 +7,9 @@
 import Foundation
 
 extension InputStream {
+    
     func readStream() -> Data? {
+        
         let max_buffer = 4096
         var dataQueue = [Data]()
         var length = max_buffer
@@ -43,9 +45,11 @@ extension InputStream {
         
         return nil
     }
+    
 }
 
 extension OutputStream {
+    
     func writeStream(_ data: Data) {
         let bytes = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
         _ = self.write(bytes, maxLength: data.count)
@@ -60,4 +64,5 @@ extension OutputStream {
             if self.streamError != nil { break }
         }
     }
+    
 }

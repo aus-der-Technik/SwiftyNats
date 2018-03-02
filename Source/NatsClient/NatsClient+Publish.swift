@@ -1,6 +1,6 @@
 //
 //  NatsClient+Publish.swift
-//  SwiftyNatsPackageDescription
+//  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
 //
@@ -12,7 +12,7 @@ extension NatsClient: NatsPublish {
     public func publish(payload: String, toSubject subject: String) {
         
         if let data = payload.data(using: String.Encoding.utf8) {
-            sendMessage("\(NatsProtocol.publish.rawValue) \(subject) \(data.count)\r\n\(payload)\r\n")
+            sendMessage("\(NatsOperation.publish.rawValue) \(subject) \(data.count)\r\n\(payload)\r\n")
         }
         
     }
@@ -24,9 +24,11 @@ extension NatsClient: NatsPublish {
     }
     
     func sendMessage(_ data: Data) {
+        
         guard self.state == .connected else { return }
         
         self.writeQueue.addOperation { [weak self] in
+            
             guard let s = self else { return }
             guard let stream = s.outputStream else { return }
             

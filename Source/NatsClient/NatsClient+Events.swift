@@ -5,42 +5,31 @@
 //  Created by Ray Krow on 2/27/18.
 //
 
-
-
 extension NatsClient: NatsEvents {
     
     
     // MARK - Implement NatsEvents Protocol
     
-    func on(_ eventType: NatsEventType, _ handler: @escaping (NatsEvent) -> Void) {
+    func on(_ event: NatsEvent, _ handler: @escaping () -> Void) {
         
-        var handlerStore = self.eventHandlerStore[eventType]
+        var handlerStore = self.eventHandlerStore[event]
         
         if handlerStore == nil {
             handlerStore = []
         }
         
         handlerStore?.append(handler)
+        
+        self.eventHandlerStore[event] = handlerStore
 
     }
     
-    func fire(_ eventType: NatsEventType, _ message: String?) {
+    func fire(_ event: NatsEvent) {
         
-        guard let handlerStore = self.eventHandlerStore[eventType] else { return }
-        
-        let event: NatsEvent
-        if let str = message {
-            event = NatsEvent(type: eventType, message: str)
-        } else {
-            event = NatsEvent(type: eventType)
-        }
+        guard let handlerStore = self.eventHandlerStore[event] else { return }
  
-        handlerStore.forEach { $0(event) }
+        handlerStore.forEach { $0() }
         
-    }
-    
-    func fire(_ event: NatsEventType) {
-        self.fire(event, nil)
     }
     
     

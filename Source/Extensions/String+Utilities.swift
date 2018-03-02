@@ -11,24 +11,22 @@ extension String: Error { }
 
 extension String {
     
-    func flattenedMessage() -> String {
+    func removeNewlines() -> String {
         return self.components(separatedBy: CharacterSet.newlines).reduce("", {$0 + $1})
     }
     
     func removePrefix(_ prefix: String) -> String {
         let index = self.index(self.startIndex, offsetBy: prefix.count)
-        return String(self[..<index])
+        return String(self[index...])
     }
     
-    func convertToDictionary() -> [String: AnyObject]? {
-        if let data = self.data(using: String.Encoding.utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
-            } catch let error as NSError {
-                print(error)
-            }
-        }
-        return nil
+    func toJsonDicitonary() -> [String: AnyObject]? {
+        
+        guard let data = self.data(using: String.Encoding.utf8) else { return nil }
+        
+        guard let obj = try? JSONSerialization.jsonObject(with: data, options: []) else { return nil }
+        
+        return obj as? [String: AnyObject]
     }
     
 }

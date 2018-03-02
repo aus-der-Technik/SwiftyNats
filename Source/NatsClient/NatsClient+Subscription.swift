@@ -1,6 +1,6 @@
 //
 //  NatsClient+Subscription.swift
-//  SwiftyNatsPackageDescription
+//  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
 //
@@ -14,6 +14,9 @@ extension NatsClient: NatsSubscription {
     public func subscribe(toSubject subjectName: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         
         let subject = NatsSubject(subject: subjectName)
+        
+        self.sendMessage("SUB \(subject.subject) \(subject.id)")
+        
         self.subjectHandlerStore[subject] = handler
         
         return subject
@@ -21,6 +24,7 @@ extension NatsClient: NatsSubscription {
     
     public func unsubscribe(fromSubject subject: NatsSubject) {
         
+        self.sendMessage("UNSUB \(subject.id)")
         self.subjectHandlerStore[subject] = nil
         
     }
@@ -33,6 +37,7 @@ extension NatsClient: NatsSubscription {
         
         guard let handler = self.subjectHandlerStore[message.subject] else { return }
         
+        print("DEBUG -> Calling handler")
         handler(message)
     }
     
@@ -43,7 +48,7 @@ extension NatsClient: NatsSubscription {
         
         let payload = components[1]
         let header = components[0]
-            .removePrefix(NatsProtocol.message.rawValue)
+            .removePrefix(NatsOperation.message.rawValue)
             .components(separatedBy: CharacterSet.whitespaces)
             .filter { !$0.isEmpty }
         
