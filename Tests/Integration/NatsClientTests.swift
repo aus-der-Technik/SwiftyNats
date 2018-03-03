@@ -76,31 +76,4 @@ class NatsSwiftyTests: XCTestCase {
         
     }
     
-    // TODO - Figure out a way to test this. Currently this test blows up when opening two clients at once :/
-    
-//    // Requires that you manually publish a message during test wait period
-//    func testClientSubscription() {
-//
-//        let clientA = NatsClient(natsUrl)
-//        let clientB = NatsClient(natsUrl)
-//
-//        guard let _ = try? clientA.connect() else { XCTAssertTrue(false); return }
-//        guard let _ = try? clientB.connect() else { XCTAssertTrue(false); return }
-//
-//        var didRecieveMessage = false
-//        let _ = clientA.subscribe(toSubject: "swift.test") { message in
-//            didRecieveMessage = true
-//        }
-//
-//        sleep(1)
-//
-//        clientB.publish(payload: "hello", toSubject: "swift.test")
-//
-//        sleep(20)
-//
-//        XCTAssertTrue(didRecieveMessage, "Client did not recieve message")
-//
-//    }
-    
-    
 }
