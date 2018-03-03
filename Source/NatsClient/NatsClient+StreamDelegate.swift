@@ -80,7 +80,9 @@ extension NatsClient {
         
         guard let handler = self.subjectHandlerStore[message.subject] else { return }
         
-        handler(message)
+        DispatchQueue.main.async {
+            handler(message)
+        }
     }
     
     fileprivate func parseMessage(_ message: String) -> NatsMessage? {
