@@ -5,6 +5,7 @@
 //  Created by Ray Krow on 2/27/18.
 //
 
+import Foundation
 
 struct NatsMessage {
     
@@ -20,4 +21,25 @@ struct NatsMessage {
         self.replySubject = replySubject
     }
     
+}
+
+extension NatsMessage {
+    public static func publish(payload: String, subject: String) -> String {
+        guard let data = payload.data(using: String.Encoding.utf8) else { return "" }
+        return "\(NatsOperation.publish.rawValue) \(subject) \(data.count)\r\n\(payload)\r\n"
+    }
+    public static func subscribe(subject: String, sid: String) -> String {
+        return "\(NatsOperation.subscribe.rawValue) \(subject) \(sid)\r\n"
+    }
+    public static func unsubscribe(sid: String) -> String {
+        return "\(NatsOperation.unsubscribe.rawValue) \(sid)\r\n"
+    }
+    public static func pong() -> String {
+        return "PONG\r\n"
+    }
+    public static func connect(config: [String:Any]) -> String {
+        guard let data = try? JSONSerialization.data(withJSONObject: config, options: []) else { return "" }
+        guard let payload = data.toString() else { return "" }
+        return "\(NatsOperation.connect.rawValue) \(payload)\r\n"
+    }
 }

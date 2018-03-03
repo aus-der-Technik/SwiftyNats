@@ -32,7 +32,7 @@ class NatsClient: NSObject {
     var eventHandlerStore: [ NatsEvent: Array<() -> Void> ] = [:]
     var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     
-    public init(_ url: String, _ config: NatsClientConfig?) {
+    public init(_ url: String, _ config: NatsClientConfig? = nil) {
         self.url = URL(string: url)!
         self.config = config ?? NatsClientConfig()
         
@@ -53,16 +53,9 @@ protocol NatsSubscription {
 
 protocol NatsPublish {
     func publish(payload: String, toSubject subject: String)
-    
-    // Private
-    func sendMessage(_ message: String)
-    func sendMessage(_ message: Data)
 }
 
 protocol NatsEvents {
     func on(_ event: NatsEvent, _ handler: @escaping () -> Void)
-    
-    // Private
-    func fire(_ eventType: NatsEvent)
 }
 

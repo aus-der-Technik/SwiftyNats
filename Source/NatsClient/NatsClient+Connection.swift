@@ -97,20 +97,16 @@ extension NatsClient: NatsConnection {
             "pass": password
             ] as [String : Any]
         
-        let configData = try JSONSerialization.data(withJSONObject: config, options: [])
-        
-        if let configString = configData.toString() {
-            if let data = "\(NatsOperation.connect.rawValue) \(configString)\r\n".data(using: String.Encoding.utf8) {
+        if let data = NatsMessage.connect(config: config).data(using: String.Encoding.utf8) {
+            
+            outStream.writeStreamWhenReady(data) // -> send
+            
+            if let info = inStream.readStreamWhenReady() { // <- receive
                 
-                outStream.writeStreamWhenReady(data) // -> send
-                
-                if let info = inStream.readStreamWhenReady() { // <- receive
-                    
-                    if !info.hasPrefix(NatsOperation.error.rawValue) {
-                        return
-                    }
-                    
+                if !info.hasPrefix(NatsOperation.error.rawValue) {
+                    return
                 }
+                
             }
         }
         
