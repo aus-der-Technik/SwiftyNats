@@ -1,4 +1,4 @@
-language: objective-c
-osx_image: xcode9.2
-xcode_project: SwiftyNats.xcodeproj
-xcode_scheme: SwiftyNatsPackageTests
+language: swift
+os: osx
+script:
+  - swift build
