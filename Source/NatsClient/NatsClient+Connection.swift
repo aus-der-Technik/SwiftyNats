@@ -15,7 +15,12 @@ extension NatsClient: NatsConnection {
         
         guard self.state != .connected else { return }
         
-        try self.openStream()
+        do {
+            try self.openStream()
+        } catch let error as NatsError {
+            self.disconnect()
+            throw error
+        }
         
         self.state = .connected
         self.fire(.connected)
