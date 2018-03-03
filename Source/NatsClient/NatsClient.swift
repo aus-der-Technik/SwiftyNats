@@ -53,8 +53,8 @@ protocol NatsSubscription {
 }
 
 protocol NatsPublish {
-    func publish(payload: String, toSubject subject: String)
-    func publish(payload: String, toSubject subject: NatsSubject)
+    func publish(_ payload: String, to subject: String)
+    func publish(_ payload: String, to subject: NatsSubject)
     func reply(toMessage message: NatsMessage, withPayload payload: String)
 }
 

@@ -53,7 +53,7 @@ class NatsSwiftyTests: XCTestCase {
         
         guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
         
-        client.publish(payload: "a test message", toSubject: "swift.test")
+        client.publish("a test message", to: "swift.test")
         
         sleep(2) // Publish happens async, keep the process alive long enough for the message to go out
         
@@ -74,6 +74,8 @@ class NatsSwiftyTests: XCTestCase {
         
         XCTAssertTrue(hasConnected, "Subscriber was not notified of connection")
         
+        client.disconnect()
+        
     }
     
     func testClientSubscription() {
@@ -82,9 +84,15 @@ class NatsSwiftyTests: XCTestCase {
         
         guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
         
-        let _ = client.subscribe(toSubject: "swift.test") { message in
+        let _ = client.subscribe(to: "swift.test") { message in
             // return "response"
         }
+        
+        sleep(2)
+        
+        XCTAssertTrue(true, "Subscriber was not notified of connection")
+        
+        client.disconnect()
         
     }
     
