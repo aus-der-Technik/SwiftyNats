@@ -13,4 +13,8 @@ extension NatsClient: NatsPublish {
         sendMessage(NatsMessage.publish(payload: payload, subject: subject))
     }
     
+    open func publish(payload: String, toSubject subject: NatsSubject) {
+        publish(payload: payload, toSubject: subject.subject)
+    }
+    
 }
