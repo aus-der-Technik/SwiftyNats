@@ -69,19 +69,27 @@ extension NatsClient: NatsConnection {
         inStream.open()
         outStream.open()
 
-        guard let info = inStream.readStreamWhenReady() else { throw NatsConnectionError("Did not get a response from the server") }
-        guard info.hasPrefix(NatsOperation.info.rawValue) else { throw NatsConnectionError("Server responded with unexptected result") }
-        guard let config = info.removeNewlines().removePrefix(NatsOperation.info.rawValue).toJsonDicitonary() else { throw NatsConnectionError("Failed to read server response") }
+        guard let info = inStream.readStreamWhenReady() else {
+            throw NatsConnectionError("Did not get a response from the server")
+        }
+        
+        guard info.hasPrefix(NatsOperation.info.rawValue) else {
+            throw NatsConnectionError("Server responded with unexptected result")
+        }
+        
+        guard let config = info.removeNewlines().removePrefix(NatsOperation.info.rawValue).toJsonDicitonary() else {
+            throw NatsConnectionError("Failed to read server response")
+        }
         
         self.server = NatsServer(config)
         
-        guard let _ = self.server else { throw NatsConnectionError("Failed to connect to server") }
-        
-        if !self.server!.authRequired{
-            return
+        guard let _ = self.server else {
+            throw NatsConnectionError("Failed to connect to server")
         }
         
-        try self.authenticateWithServer(usingInStream: inStream, andOutStream: outStream)
+        if self.server!.authRequired {
+            try self.authenticateWithServer(usingInStream: inStream, andOutStream: outStream)
+        }
         
     }
     
