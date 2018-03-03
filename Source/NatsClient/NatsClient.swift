@@ -47,9 +47,9 @@ protocol NatsConnection {
     func disconnect()
 }
 
-protocol NatsSubscription {
-    func subscribe(toSubject subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject
-    func unsubscribe(fromSubject subject: NatsSubject)
+protocol NatsSubscribe {
+    func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject
+    func unsubscribe(from subject: NatsSubject)
 }
 
 protocol NatsPublish {
