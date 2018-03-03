@@ -35,7 +35,7 @@ extension NatsMessage {
         return "\(NatsOperation.unsubscribe.rawValue) \(sid)\r\n"
     }
     public static func pong() -> String {
-        return "PONG\r\n"
+        return "\(NatsOperation.pong.rawValue)\r\n"
     }
     public static func connect(config: [String:Any]) -> String {
         guard let data = try? JSONSerialization.data(withJSONObject: config, options: []) else { return "" }
