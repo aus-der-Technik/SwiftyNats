@@ -66,7 +66,7 @@ class NatsSwiftyTests: XCTestCase {
         let client = NatsClient(natsUrl)
         
         var hasConnected = false
-        client.on(NatsEvent.connected) {
+        client.on(.connected) {_ in
             hasConnected = true
         }
         
