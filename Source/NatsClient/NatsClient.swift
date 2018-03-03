@@ -20,20 +20,18 @@ public enum NatsEvent: String {
 }
 
 open class NatsClient: NSObject {
-    
-    // FIX: Want all these to be private but then extensions in other files can't see them
-    
+        
     let url: URL
     let config: NatsClientConfig
     
-    var state: NatsState = .disconnected
-    var inputStream: InputStream?
-    var outputStream: OutputStream?
-    var server: NatsServer?
-    var writeQueue = OperationQueue()
-    var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
-    var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
-    var autoRetryCount: Int = 0
+    internal var state: NatsState = .disconnected
+    internal var inputStream: InputStream?
+    internal var outputStream: OutputStream?
+    internal var server: NatsServer?
+    internal var writeQueue = OperationQueue()
+    internal var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
+    internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
+    internal var autoRetryCount: Int = 0
     
     public init(_ url: String, _ config: NatsClientConfig? = nil) {
         self.url = URL(string: url)!
