@@ -62,9 +62,9 @@ extension NatsClient {
         if message.hasPrefix(NatsOperation.ping.rawValue) {
             self.sendMessage(NatsMessage.pong())
         } else if message.hasPrefix(NatsOperation.ok.rawValue) {
-            // TODO: Log OK
+            self.fire(.response)
         } else if message.hasPrefix(NatsOperation.error.rawValue) {
-            // TODO: Log Error
+            self.fire(.error)
         } else if message.hasPrefix(NatsOperation.message.rawValue) {
             self.handleIncomingMessage(message)
         }

@@ -16,5 +16,18 @@ struct NatsConnectionError: NatsError {
     }
 }
 
+struct NatsSubscribeError: NatsError {
+    var description: String
+    init(_ description: String) {
+        self.description = description
+    }
+}
+
+struct NatsPublishError: NatsError {
+    var description: String
+    init(_ description: String) {
+        self.description = description
+    }
+}
 
 
