@@ -4,6 +4,7 @@
 //
 //  Created by Ray Krow on 2/27/18.
 //
+
 import Foundation
 
 extension InputStream {

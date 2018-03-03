@@ -7,7 +7,6 @@
 
 extension NatsClient: NatsEvents {
     
-    
     // MARK - Implement NatsEvents Protocol
     
     open func on(_ event: NatsEvent, _ handler: @escaping () -> Void) {

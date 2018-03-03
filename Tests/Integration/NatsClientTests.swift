@@ -76,4 +76,16 @@ class NatsSwiftyTests: XCTestCase {
         
     }
     
+    func testClientSubscription() {
+        
+        let client = NatsClient(natsUrl)
+        
+        guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
+        
+        let _ = client.subscribe(toSubject: "swift.test") { message in
+            // return "response"
+        }
+        
+    }
+    
 }
