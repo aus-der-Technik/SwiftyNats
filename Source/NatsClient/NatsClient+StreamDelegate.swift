@@ -20,13 +20,9 @@ extension NatsClient: StreamDelegate {
                     self.handleIncomingMessage(data)
                 }
                 break
-            case [.errorOccurred]:
+            case [.errorOccurred, .endEncountered]:
                 self.disconnect()
-                self.fire(.disconnected)
-                break
-            case [.endEncountered]:
-                self.disconnect()
-                self.fire(.disconnected)
+                self.retryConnection()
                 break
             default:
                 break

@@ -31,6 +31,7 @@ open class NatsClient: NSObject {
     var writeQueue = OperationQueue()
     var eventHandlerStore: [ NatsEvent: Array<() -> Void> ] = [:]
     var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
+    var autoRetryCount: Int = 0
     
     public init(_ url: String, _ config: NatsClientConfig? = nil) {
         self.url = URL(string: url)!

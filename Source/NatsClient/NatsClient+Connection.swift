@@ -50,6 +50,23 @@ extension NatsClient: NatsConnection {
         
     }
     
+    // MARK - Internal Methods
+    
+    internal func retryConnection() {
+        
+        if self.config.autoRetry {
+            while self.autoRetryCount < self.config.autoRetryMax {
+                if let _ = try? self.connect() {
+                    self.autoRetryCount = 0
+                    return
+                }
+                self.autoRetryCount += 1
+            }
+        }
+        
+        self.fire(.disconnected)
+    }
+    
     // MARK - Private Methods
     
     fileprivate func openStream() throws {
