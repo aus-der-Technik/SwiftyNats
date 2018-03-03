@@ -11,7 +11,7 @@ extension NatsClient: NatsConnection {
     
     // MARK - Implement NatsConnection Protocol
     
-    public func connect() throws {
+    open func connect() throws {
         
         guard self.state != .connected else { return }
         
@@ -30,7 +30,7 @@ extension NatsClient: NatsConnection {
         RunLoop.current.run(mode: RunLoopMode.defaultRunLoopMode, before: Date.distantFuture as Date)
     }
     
-    public func disconnect() {
+    open func disconnect() {
         
         guard let newReadStream = self.inputStream, let newWriteStream = self.outputStream else { return }
         
@@ -47,7 +47,7 @@ extension NatsClient: NatsConnection {
     
     // MARK - Private Methods
     
-    private func openStream() throws {
+    fileprivate func openStream() throws {
         
         guard let host = self.url.host, let port = self.url.port else { throw NatsConnectionError("Invalid url provided (\(self.url.absoluteString))") }
         
@@ -80,7 +80,7 @@ extension NatsClient: NatsConnection {
         
     }
     
-    private func authenticateWithServer(usingInStream inStream: InputStream, andOutStream outStream: OutputStream) throws {
+    fileprivate func authenticateWithServer(usingInStream inStream: InputStream, andOutStream outStream: OutputStream) throws {
         
         guard let user = self.url.user, let password = self.url.password else {
             throw NatsConnectionError("Server authentication requires url with basic authentication")

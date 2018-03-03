@@ -11,7 +11,7 @@ extension NatsClient: NatsSubscription {
     
     // MARK - Implement NatsSubscription Protocol
     
-    public func subscribe(toSubject subjectName: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
+    open func subscribe(toSubject subjectName: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         
         let subject = NatsSubject(subject: subjectName)
         
@@ -22,7 +22,7 @@ extension NatsClient: NatsSubscription {
         return subject
     }
     
-    public func unsubscribe(fromSubject subject: NatsSubject) {
+    open func unsubscribe(fromSubject subject: NatsSubject) {
         
         self.sendMessage(NatsMessage.unsubscribe(sid: subject.id))
         self.subjectHandlerStore[subject] = nil

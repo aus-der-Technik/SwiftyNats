@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NatsSubject {
+public struct NatsSubject {
     
     let subject: String
     let id: String
@@ -25,10 +25,10 @@ struct NatsSubject {
 }
 
 extension NatsSubject: Hashable {
-    static func ==(lhs: NatsSubject, rhs: NatsSubject) -> Bool {
+    public static func ==(lhs: NatsSubject, rhs: NatsSubject) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
-    var hashValue: Int {
+    public var hashValue: Int {
         return self.id.hashValue
     }
 }

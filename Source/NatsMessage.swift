@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NatsMessage {
+public struct NatsMessage {
     
     let payload: String?
     let byteCount: UInt32?

@@ -40,7 +40,7 @@ extension NatsClient: StreamDelegate {
 
 extension NatsClient {
     
-    func sendMessage(_ message: String) {
+    internal func sendMessage(_ message: String) {
         if let data = message.data(using: String.Encoding.utf8) {
             sendMessage(data)
         }
@@ -48,7 +48,7 @@ extension NatsClient {
     
     // MARK - Implement Private Methods
     
-    private func sendMessage(_ data: Data) {
+    fileprivate func sendMessage(_ data: Data) {
         
         guard self.state == .connected else { return }
         
@@ -61,7 +61,7 @@ extension NatsClient {
         }
     }
     
-    private func handleIncomingMessage(_ data: Data) {
+    fileprivate func handleIncomingMessage(_ data: Data) {
         guard let message = data.toString() else { return }
         if message.hasPrefix(NatsOperation.ping.rawValue) {
             self.sendMessage(NatsMessage.pong())
@@ -74,7 +74,7 @@ extension NatsClient {
         }
     }
     
-    private func handleIncomingMessage(_ messageStr: String) {
+    fileprivate func handleIncomingMessage(_ messageStr: String) {
         
         guard let message = parseMessage(messageStr) else { return }
         
@@ -83,7 +83,7 @@ extension NatsClient {
         handler(message)
     }
     
-    private func parseMessage(_ message: String) -> NatsMessage? {
+    fileprivate func parseMessage(_ message: String) -> NatsMessage? {
         let components = message.components(separatedBy: CharacterSet.newlines).filter { !$0.isEmpty }
         
         if components.count <= 0 { return nil }

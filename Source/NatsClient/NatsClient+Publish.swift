@@ -9,7 +9,7 @@ import Foundation
 
 extension NatsClient: NatsPublish {
     
-    public func publish(payload: String, toSubject subject: String) {
+    open func publish(payload: String, toSubject subject: String) {
         sendMessage(NatsMessage.publish(payload: payload, subject: subject))
     }
     

@@ -12,12 +12,12 @@ enum NatsState {
     case disconnected
 }
 
-enum NatsEvent: String {
+public enum NatsEvent: String {
     case connected = "connected"
     case disconnected = "disconnected"
 }
 
-class NatsClient: NSObject {
+open class NatsClient: NSObject {
     
     // FIX: Want all these to be private but then extensions in other files can't see them
     

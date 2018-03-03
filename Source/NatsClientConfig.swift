@@ -7,7 +7,7 @@
 
 
 
-struct NatsClientConfig {
+public struct NatsClientConfig {
     let verbose: Bool
     let pedantic: Bool
     let name: String
