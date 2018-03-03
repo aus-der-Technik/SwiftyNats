@@ -76,8 +76,20 @@ extension NatsClient {
         
         guard let handler = self.subjectHandlerStore[message.subject] else { return }
         
-        DispatchQueue.main.async {
+        self.messageQueue.append(message)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let s = self else { return }
+            
+            // Ensure message still exists in the queue before calling handler
+            // if it does not exist, the queue was flushed and we should ignore it
+            let messageExists = s.messageQueue.contains { $0.mid == message.mid }
+            if messageExists { return }
+            
             handler(message)
+            
+            // Ensure the message is removed from the queue
+            s.messageQueue = s.messageQueue.filter { $0.mid != message.mid }
         }
     }
     

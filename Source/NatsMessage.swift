@@ -8,17 +8,19 @@
 import Foundation
 
 public struct NatsMessage {
-    
+
     let payload: String?
     let byteCount: UInt32?
     let subject: NatsSubject
     let replySubject: NatsSubject?
+    let mid: String
     
     init(payload: String?, byteCount: UInt32?, subject: NatsSubject, replySubject: NatsSubject? = nil) {
         self.payload = payload
         self.byteCount = byteCount
         self.subject = subject
         self.replySubject = replySubject
+        self.mid = UUID().uuidString
     }
     
 }

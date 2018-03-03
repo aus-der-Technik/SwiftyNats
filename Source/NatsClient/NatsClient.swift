@@ -20,7 +20,7 @@ public enum NatsEvent: String {
 }
 
 open class NatsClient: NSObject {
-        
+    
     let url: URL
     let config: NatsClientConfig
     
@@ -32,6 +32,7 @@ open class NatsClient: NSObject {
     internal var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var autoRetryCount: Int = 0
+    internal var messageQueue: [NatsMessage] = []
     
     public init(_ url: String, _ config: NatsClientConfig? = nil) {
         self.url = URL(string: url)!
@@ -68,5 +69,11 @@ protocol NatsPublish {
 protocol NatsEvents {
     func on(_ event: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void)
     func on(_ envet: NatsEvent, _ handler: @escaping (NatsEvent) -> Void)
+}
+
+protocol NatsClientQueue {
+    var queueCount: Int { get }
+    func flushQueue()
+    func flushQueueAsync()
 }
 

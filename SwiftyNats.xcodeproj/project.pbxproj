@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		FC536444204A66E700B8FF9E /* NatsClient+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */; };
 		OBJ_40 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_46 /* NatsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NatsClientTests.swift */; };
 		OBJ_47 /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* StringExtensionTests.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Queue.swift"; sourceTree = "<group>"; };
 		OBJ_10 /* NatsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsError.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Streams+Read+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streams+Read+Write.swift"; sourceTree = "<group>"; };
 		OBJ_12 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				OBJ_18 /* NatsClient+Subscribe.swift */,
 				OBJ_15 /* NatsClient+Events.swift */,
 				OBJ_17 /* NatsClient+StreamDelegate.swift */,
+				FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */,
 			);
 			path = NatsClient;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				OBJ_59 /* String+Utilities.swift in Sources */,
 				OBJ_60 /* NatsClient+Connection.swift in Sources */,
 				OBJ_61 /* NatsClient+Events.swift in Sources */,
+				FC536444204A66E700B8FF9E /* NatsClient+Queue.swift in Sources */,
 				OBJ_62 /* NatsClient+Publish.swift in Sources */,
 				OBJ_63 /* NatsClient+StreamDelegate.swift in Sources */,
 				OBJ_64 /* NatsClient+Subscribe.swift in Sources */,
