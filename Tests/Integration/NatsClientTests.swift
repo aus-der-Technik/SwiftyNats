@@ -10,30 +10,7 @@ import XCTest
 
 class NatsSwiftyTests: XCTestCase {
     
-    let natsUrl: String = "http://localhost:4222"
-    
-    override class func setUp() {
-        
-        let task = Process()
-        task.launchPath = "/usr/local/bin/docker"
-        task.arguments = [ "run", "-p", "4222:4222", "--rm", "--name", "swifty_nats_test_server", "nats:1.0.4" ]
-        task.launch()
-        
-        sleep(2) // Give time for docker to spin up nats
-    
-        super.setUp()
-    }
-    
-    override class func tearDown() {
-        
-        let task = Process()
-        task.launchPath = "/usr/local/bin/docker"
-        task.arguments = [ "stop", "swifty_nats_test_server" ]
-        task.launch()
-        
-        super.tearDown()
-    }
-    
+    let natsUrl: String = "http://nats.oakudo.com:4222"
     
     func testClientConnection() {
         
