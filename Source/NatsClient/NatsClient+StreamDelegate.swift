@@ -89,6 +89,8 @@ extension NatsClient {
             handler(message)
             
             // Ensure the message is removed from the queue
+            // TODO: Find a faster way of doing this. Filter
+            // is not most performant to remove single item
             s.messageQueue = s.messageQueue.filter { $0.mid != message.mid }
         }
     }

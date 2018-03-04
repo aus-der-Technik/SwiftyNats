@@ -21,7 +21,8 @@ public enum NatsEvent: String {
 
 open class NatsClient: NSObject {
     
-    let url: URL
+    let urls: [URL]
+    var connectedUrl: URL?
     let config: NatsClientConfig
     
     internal var state: NatsState = .disconnected
@@ -34,11 +35,23 @@ open class NatsClient: NSObject {
     internal var autoRetryCount: Int = 0
     internal var messageQueue: [NatsMessage] = []
     
-    public init(_ url: String, _ config: NatsClientConfig? = nil) {
-        self.url = URL(string: url)!
-        self.config = config ?? NatsClientConfig()
+    public init(_ urls: [String], _ config: NatsClientConfig) {
+
+        var servers: [URL] = []
+        for url in urls {
+            servers.append(URL(string: url)!)
+        }
+        
+        self.urls = servers
+        self.config = config
         
         writeQueue.maxConcurrentOperationCount = 1
+    }
+    
+    convenience init(_ url: String, _ config: NatsClientConfig? = nil) {
+        let urls = [ url ]
+        let config = config ?? NatsClientConfig()
+        self.init(urls, config)
     }
     
 }

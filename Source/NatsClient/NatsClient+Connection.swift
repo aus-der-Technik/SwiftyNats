@@ -15,11 +15,32 @@ extension NatsClient: NatsConnection {
         
         guard self.state != .connected else { return }
         
-        do {
-            try self.openStream()
-        } catch let error as NatsError {
+        // We could hit any number of errors while trying to connect to any
+        // number of servers...here well just keep the last encountered one
+        // so we have something helpful to throw up
+        var connectionError: NatsError? = nil
+        
+        // If we have a list of `connectUrls` in our current server
+        // add them to the list of knownServers here so we can attempt
+        // to connect to them as well
+        var knownServers = self.urls
+        if let otherServers = self.server?.connectUrls {
+            otherServers.forEach { knownServers.append(URL(string: $0)!) }
+        }
+        
+        for server in knownServers {
+            do {
+                try self.openStream(to: server)
+            } catch let error as NatsError {
+                connectionError = error
+                continue // to try next server
+            }
+            self.connectedUrl = server
+        }
+        
+        guard let _ = self.connectedUrl else {
             self.disconnect()
-            throw error
+            throw connectionError!
         }
         
         self.state = .connected
@@ -69,9 +90,9 @@ extension NatsClient: NatsConnection {
     
     // MARK - Private Methods
     
-    fileprivate func openStream() throws {
+    fileprivate func openStream(to server: URL) throws {
         
-        guard let host = self.url.host, let port = self.url.port else { throw NatsConnectionError("Invalid url provided (\(self.url.absoluteString))") }
+        guard let host = server.host, let port = server.port else { throw NatsConnectionError("Invalid url provided (\(server.absoluteString))") }
         
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
@@ -112,7 +133,7 @@ extension NatsClient: NatsConnection {
     
     fileprivate func authenticateWithServer(usingInStream inStream: InputStream, andOutStream outStream: OutputStream) throws {
         
-        guard let user = self.url.user, let password = self.url.password else {
+        guard let user = self.connectedUrl?.user, let password = self.connectedUrl?.password else {
             throw NatsConnectionError("Server authentication requires url with basic authentication")
         }
         

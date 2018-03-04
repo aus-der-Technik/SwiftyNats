@@ -61,6 +61,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FC4CE900204BB97B00CC6E9C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FC4CE901204BB9E800CC6E9C /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Queue.swift"; sourceTree = "<group>"; };
 		OBJ_10 /* NatsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsError.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Streams+Read+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streams+Read+Write.swift"; sourceTree = "<group>"; };
@@ -151,15 +153,16 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				FC4CE900204BB97B00CC6E9C /* README.md */,
+				FC4CE901204BB9E800CC6E9C /* .travis.yml */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_27 /* Tests */,
 				OBJ_32 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -253,7 +256,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_32 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

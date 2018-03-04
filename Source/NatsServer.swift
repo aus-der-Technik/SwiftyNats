@@ -16,6 +16,9 @@ struct NatsServer {
     let sslRequired: Bool
     let maxPayload: UInt
     
+    let connectUrls: [String]?
+    let tlsVerify: Bool?
+    
     init(_ data: [String: AnyObject]) {
         self.serverId = data["server_id"] as! String
         self.version = data["version"] as! String
@@ -25,6 +28,8 @@ struct NatsServer {
         self.authRequired = data["auth_required"] as! Bool
         self.sslRequired = data["ssl_required"] as! Bool
         self.maxPayload = data["max_payload"] as! UInt
+        self.tlsVerify = data["tls_verify"] as? Bool
+        self.connectUrls = data["connect_urls"] as? [String]
     }
     
 }
