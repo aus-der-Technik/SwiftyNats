@@ -73,7 +73,7 @@ protocol NatsEvents {
 
 protocol NatsClientQueue {
     var queueCount: Int { get }
+    func flushQueue(maxWaitSeconds: TimeInterval?) throws
     func flushQueue()
-    func flushQueueAsync()
 }
 

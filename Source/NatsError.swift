@@ -30,4 +30,11 @@ struct NatsPublishError: NatsError {
     }
 }
 
+struct NatsTimeoutError: NatsError {
+    var description: String
+    init(_ description: String) {
+        self.description = description
+    }
+}
+
 
