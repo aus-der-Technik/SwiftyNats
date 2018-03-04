@@ -2,16 +2,13 @@ language: swift
 
 os: osx
 sudo: required
-
 osx_image: xcode9.2
-xcode_project: SwiftyNats.xcodeproj
-xcode_scheme: SwiftyNats-Package
 
 services:
   - docker
 
 before_install:
-  - docker pull nats:1.0.4
+  - "docker pull nats:1.0.4"
 
 script:
   - xcodebuild clean build -project SwiftyNats.xcodeproj -scheme SwiftyNats-Package CODE_SIGNING_REQUIRED=NO
