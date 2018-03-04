@@ -4,6 +4,8 @@
 A swift client for interacting with a [nats](http://nats.io) server.
 
 [![Build Status](https://travis-ci.org/raykrow/swifty-nats.svg?branch=master)](https://travis-ci.org/raykrow/swifty-nats)
+[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/raykrow/swifty-nats/blob/master/LICENSE)
+[![Swift4](http://img.shields.io/badge/swift-4.1-brightgreen.svg)](https://swift.org)
 
 ### TODO
 - Save `connect_urls` property from INFO response and use it later when attempting to reconnect
