@@ -61,7 +61,7 @@ open class NatsClient: NSObject {
         writeQueue.maxConcurrentOperationCount = 1
     }
     
-    convenience init(_ url: String, _ config: NatsClientConfig? = nil) {
+    public convenience init(_ url: String, _ config: NatsClientConfig? = nil) {
         let urls = [ url ]
         let config = config ?? NatsClientConfig()
         self.init(urls, config)
