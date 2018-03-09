@@ -24,41 +24,35 @@ extension NatsClient: NatsPublish {
         publish(payload, to: replySubject.subject)
     }
     
-    open func publishAsync(_ payload: String, to subject: String) throws {
+    open func publishSync(_ payload: String, to subject: String) throws {
         
         let group = DispatchGroup()
         group.enter()
+                
+        var response: NatsResponse?
         
-        var error: NatsPublishError?
-        
-        DispatchQueue.global(qos: .default).async { [weak self] in
-            // Wait for server to respond with +OK
-            guard let s = self else { group.leave(); return }
-            s.on(.response) { event in
-                if event == .error {
-                    error = NatsPublishError("Nats server had an error while publishing our message")
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async {
+            response = self.getResponseFromStream()
+            group.leave()
         }
         
         publish(payload, to: subject)
         
         group.wait()
-        
-        if let e = error {
-            throw e
+
+        if response?.type == .error {
+            throw NatsPublishError(response?.message ?? "")
         }
         
     }
     
-    open func publishAsync(_ payload: String, to subject: NatsSubject) throws {
-        try publishAsync(payload, to: subject.subject)
+    open func publishSync(_ payload: String, to subject: NatsSubject) throws {
+        try publishSync(payload, to: subject.subject)
     }
     
-    open func replyAsync(toMessage message: NatsMessage, withPayload payload: String) throws {
+    open func replySync(toMessage message: NatsMessage, withPayload payload: String) throws {
         guard let replySubject = message.replySubject else { return }
-        try publishAsync(payload, to: replySubject.subject)
+        try publishSync(payload, to: replySubject.subject)
     }
     
 }

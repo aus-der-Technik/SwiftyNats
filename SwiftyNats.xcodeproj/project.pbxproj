@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		FC4724C020525DBD00D064D5 /* NatsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4724BF20525DBD00D064D5 /* NatsResponse.swift */; };
 		FC536444204A66E700B8FF9E /* NatsClient+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */; };
 		OBJ_40 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_46 /* NatsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NatsClientTests.swift */; };
@@ -38,7 +39,6 @@
 		OBJ_65 /* NatsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* NatsClient.swift */; };
 		OBJ_66 /* NatsClientConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* NatsClientConfig.swift */; };
 		OBJ_68 /* NatsMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* NatsMessage.swift */; };
-		OBJ_69 /* NatsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* NatsOperation.swift */; };
 		OBJ_70 /* NatsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* NatsServer.swift */; };
 		OBJ_72 /* NatsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_26 /* NatsSubject.swift */; };
 /* End PBXBuildFile section */
@@ -61,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FC4724BF20525DBD00D064D5 /* NatsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsResponse.swift; sourceTree = "<group>"; };
 		FC4CE900204BB97B00CC6E9C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FC4CE901204BB9E800CC6E9C /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Queue.swift"; sourceTree = "<group>"; };
@@ -75,7 +76,6 @@
 		OBJ_19 /* NatsClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClient.swift; sourceTree = "<group>"; };
 		OBJ_20 /* NatsClientConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClientConfig.swift; sourceTree = "<group>"; };
 		OBJ_22 /* NatsMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsMessage.swift; sourceTree = "<group>"; };
-		OBJ_23 /* NatsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsOperation.swift; sourceTree = "<group>"; };
 		OBJ_24 /* NatsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsServer.swift; sourceTree = "<group>"; };
 		OBJ_26 /* NatsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsSubject.swift; sourceTree = "<group>"; };
 		OBJ_29 /* NatsClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsClientTests.swift; sourceTree = "<group>"; };
@@ -173,9 +173,9 @@
 				OBJ_20 /* NatsClientConfig.swift */,
 				OBJ_10 /* NatsError.swift */,
 				OBJ_22 /* NatsMessage.swift */,
-				OBJ_23 /* NatsOperation.swift */,
 				OBJ_24 /* NatsServer.swift */,
 				OBJ_26 /* NatsSubject.swift */,
+				FC4724BF20525DBD00D064D5 /* NatsResponse.swift */,
 			);
 			name = Sources;
 			path = Source;
@@ -293,6 +293,7 @@
 			files = (
 				OBJ_56 /* Data+String.swift in Sources */,
 				OBJ_57 /* NatsError.swift in Sources */,
+				FC4724C020525DBD00D064D5 /* NatsResponse.swift in Sources */,
 				OBJ_58 /* Streams+Read+Write.swift in Sources */,
 				OBJ_59 /* String+Utilities.swift in Sources */,
 				OBJ_60 /* NatsClient+Connection.swift in Sources */,
@@ -304,7 +305,6 @@
 				OBJ_65 /* NatsClient.swift in Sources */,
 				OBJ_66 /* NatsClientConfig.swift in Sources */,
 				OBJ_68 /* NatsMessage.swift in Sources */,
-				OBJ_69 /* NatsOperation.swift in Sources */,
 				OBJ_70 /* NatsServer.swift in Sources */,
 				OBJ_72 /* NatsSubject.swift in Sources */,
 			);

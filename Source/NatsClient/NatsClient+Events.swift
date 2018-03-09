@@ -5,7 +5,7 @@
 //  Created by Ray Krow on 2/27/18.
 //
 
-extension NatsClient: NatsEvents {
+extension NatsClient: NatsEventBus {
     
     // MARK - Implement NatsEvents Protocol
     

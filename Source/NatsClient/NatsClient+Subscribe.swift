@@ -22,6 +22,18 @@ extension NatsClient: NatsSubscribe {
         return nsub
     }
     
+    open func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
+        
+        let nsub = NatsSubject(subject: subject)
+        
+        self.sendMessage(NatsMessage.subscribe(subject: nsub.subject, sid: nsub.id, queue: queue))
+        
+        self.subjectHandlerStore[nsub] = handler
+        
+        return nsub
+        
+    }
+    
     open func unsubscribe(from subject: NatsSubject) {
         
         self.sendMessage(NatsMessage.unsubscribe(sid: subject.id))
@@ -34,25 +46,19 @@ extension NatsClient: NatsSubscribe {
         let group = DispatchGroup()
         group.enter()
         
-        var error: NatsSubscribeError?
+        var response: NatsResponse?
         
-        DispatchQueue.global(qos: .default).async { [weak self] in
-            // Wait for server to respond with +OK
-            guard let s = self else { group.leave(); return }
-            s.on(.response) { event in
-                if event == .error {
-                    error = NatsSubscribeError("Nats server rejected our request to unsubscribe")
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async {
+            response = self.getResponseFromStream()
+            group.leave()
         }
         
         self.sendMessage(NatsMessage.unsubscribe(sid: subject.id))
         
         group.wait()
         
-        if let e = error {
-            throw e
+        if response?.type == .error {
+            throw NatsSubscribeError(response?.message ?? "")
         }
         
         self.subjectHandlerStore[subject] = nil
@@ -60,21 +66,25 @@ extension NatsClient: NatsSubscribe {
     }
     
     open func subscribeSync(to subject: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
-        
+        return try subSync(to: subject, asPartOf: "", handler)
+    }
+    
+    open func subscribeSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
+        return try subSync(to: subject, asPartOf: queue, handler)
+    }
+    
+    // MARK - Private methods
+    
+    private func subSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
+     
         let group = DispatchGroup()
         group.enter()
         
-        var error: NatsSubscribeError?
+        var response: NatsResponse?
         
-        DispatchQueue.global(qos: .default).async { [weak self] in
-            // Wait for server to respond with +OK
-            guard let s = self else { group.leave(); return }
-            s.on([.response, .error]) { event in
-                if event == .error {
-                    error = NatsSubscribeError("Nats server rejected our request to subscribe to \(subject)")
-                }
-                group.leave()
-            }
+        DispatchQueue.global().async {
+            response = self.getResponseFromStream()
+            group.leave()
         }
         
         let nsub = NatsSubject(subject: subject)
@@ -82,8 +92,8 @@ extension NatsClient: NatsSubscribe {
         
         group.wait()
         
-        if let e = error {
-            throw e
+        if response?.type == .error {
+            throw NatsSubscribeError(response?.message ?? "")
         }
         
         self.subjectHandlerStore[nsub] = handler

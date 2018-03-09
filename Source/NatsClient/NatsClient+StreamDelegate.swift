@@ -11,9 +11,11 @@ extension NatsClient: StreamDelegate {
     
     // MARK - Implement StreamDelegate
     
-    open func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+    public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
+        
         switch aStream {
         case inputStream!:
+
             switch eventCode {
             case [.hasBytesAvailable]:
                 if let data = inputStream?.readStream() {
@@ -27,6 +29,7 @@ extension NatsClient: StreamDelegate {
             default:
                 break
             }
+            
         default:
             break
         }
@@ -36,10 +39,19 @@ extension NatsClient: StreamDelegate {
 
 extension NatsClient {
     
+    // MARK - Implement Internal Methods
+    
     internal func sendMessage(_ message: String) {
         if let data = message.data(using: String.Encoding.utf8) {
             sendMessage(data)
         }
+    }
+    
+    internal func getResponseFromStream() -> NatsResponse {
+        guard let response = self.inputStream?.readStreamWhenReady() else {
+            return NatsResponse.error()
+        }
+        return NatsResponse(response)
     }
     
     // MARK - Implement Private Methods
@@ -49,16 +61,18 @@ extension NatsClient {
         guard self.state == .connected else { return }
         
         self.writeQueue.addOperation { [weak self] in
-            
+
             guard let s = self else { return }
             guard let stream = s.outputStream else { return }
-            
+
             stream.writeStreamWhenReady(data)
         }
     }
     
     fileprivate func handleIncomingMessage(_ data: Data) {
+        
         guard let message = data.toString() else { return }
+        
         if message.hasPrefix(NatsOperation.ping.rawValue) {
             self.sendMessage(NatsMessage.pong())
         } else if message.hasPrefix(NatsOperation.ok.rawValue) {

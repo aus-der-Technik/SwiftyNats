@@ -19,13 +19,25 @@ public enum NatsEvent: String {
     case error = "error"
 }
 
+internal enum NatsOperation: String {
+    case connect = "CONNECT"
+    case subscribe = "SUB"
+    case unsubscribe = "UNSUB"
+    case publish = "PUB"
+    case message = "MSG"
+    case info = "INFO"
+    case ok = "+OK"
+    case error = "-ERR"
+    case ping = "PING"
+    case pong = "PONG"
+}
+
 open class NatsClient: NSObject {
     
     let urls: [URL]
     var connectedUrl: URL?
     let config: NatsClientConfig
     
-    internal var state: NatsState = .disconnected
     internal var inputStream: InputStream?
     internal var outputStream: OutputStream?
     internal var server: NatsServer?
@@ -34,6 +46,7 @@ open class NatsClient: NSObject {
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var autoRetryCount: Int = 0
     internal var messageQueue: [NatsMessage] = []
+    internal var state: NatsState = .disconnected
     
     public init(_ urls: [String], _ config: NatsClientConfig) {
 
@@ -63,9 +76,11 @@ protocol NatsConnection {
 
 protocol NatsSubscribe {
     func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject
+    func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject
     func unsubscribe(from subject: NatsSubject)
     
     func subscribeSync(to subject: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject
+    func subscribeSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject
     func unsubscribeSync(from subject: NatsSubject) throws
 }
 
@@ -74,19 +89,19 @@ protocol NatsPublish {
     func publish(_ payload: String, to subject: NatsSubject)
     func reply(toMessage message: NatsMessage, withPayload payload: String)
     
-    func publishAsync(_ payload: String, to subject: String) throws
-    func publishAsync(_ payload: String, to subject: NatsSubject) throws
-    func replyAsync(toMessage message: NatsMessage, withPayload payload: String) throws
+    func publishSync(_ payload: String, to subject: String) throws
+    func publishSync(_ payload: String, to subject: NatsSubject) throws
+    func replySync(toMessage message: NatsMessage, withPayload payload: String) throws
 }
 
-protocol NatsEvents {
+protocol NatsEventBus {
     func on(_ event: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void)
     func on(_ envet: NatsEvent, _ handler: @escaping (NatsEvent) -> Void)
 }
 
-protocol NatsClientQueue {
+protocol NatsQueue {
     var queueCount: Int { get }
-    func flushQueue(maxWaitSeconds: TimeInterval?) throws
+    func flushQueue(maxWait: TimeInterval?) throws
     func flushQueue()
 }
 

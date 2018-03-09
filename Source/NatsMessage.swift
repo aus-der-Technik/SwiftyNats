@@ -30,14 +30,17 @@ extension NatsMessage {
         guard let data = payload.data(using: String.Encoding.utf8) else { return "" }
         return "\(NatsOperation.publish.rawValue) \(subject) \(data.count)\r\n\(payload)\r\n"
     }
-    public static func subscribe(subject: String, sid: String) -> String {
-        return "\(NatsOperation.subscribe.rawValue) \(subject) \(sid)\r\n"
+    public static func subscribe(subject: String, sid: String, queue: String = "") -> String {
+        return "\(NatsOperation.subscribe.rawValue) \(subject) \(queue) \(sid)\r\n"
     }
     public static func unsubscribe(sid: String) -> String {
         return "\(NatsOperation.unsubscribe.rawValue) \(sid)\r\n"
     }
     public static func pong() -> String {
         return "\(NatsOperation.pong.rawValue)\r\n"
+    }
+    public static func ping() -> String {
+        return "\(NatsOperation.ping.rawValue)\r\n"
     }
     public static func connect(config: [String:Any]) -> String {
         guard let data = try? JSONSerialization.data(withJSONObject: config, options: []) else { return "" }

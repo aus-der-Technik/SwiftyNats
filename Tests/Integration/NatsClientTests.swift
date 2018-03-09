@@ -8,7 +8,7 @@
 import XCTest
 @testable import SwiftyNats
 
-class NatsSwiftyTests: XCTestCase {
+class NatsClientTests: XCTestCase {
     
     let natsUrl: String = "http://nats.oakudo.com:4222"
     
@@ -28,26 +28,27 @@ class NatsSwiftyTests: XCTestCase {
         
         let client = NatsClient(natsUrl)
         
-        guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         
-        client.publish("a test message", to: "swift.test")
-        
-        sleep(2) // Publish happens async, keep the process alive long enough for the message to go out
-        
+        guard let _ = try? client.publishSync("a test message", to: "swift.test") else {
+            XCTFail("Publish failed")
+            return
+        }
+
         client.disconnect()
         
     }
     
-    func testClientEvents() {
+    func testClientConnectedEvent() {
         
         let client = NatsClient(natsUrl)
         
         var hasConnected = false
-        client.on(.connected) {_ in
+        client.on(.connected) { _ in
             hasConnected = true
         }
         
-        guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         
         XCTAssertTrue(hasConnected, "Subscriber was not notified of connection")
         
@@ -55,19 +56,70 @@ class NatsSwiftyTests: XCTestCase {
         
     }
     
+    func testClientDisconnectedEvent() {
+        
+        let client = NatsClient(natsUrl)
+        
+        var hasDisconnected = false
+        client.on(.disconnected) { _ in
+            hasDisconnected = true
+        }
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        client.disconnect()
+        
+        XCTAssertTrue(hasDisconnected, "Subscriber was not notified of disconnection")
+        
+    }
+    
     func testClientSubscription() {
         
         let client = NatsClient(natsUrl)
         
-        guard let _ = try? client.connect() else { XCTAssertTrue(false); return }
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         
-        let _ = client.subscribe(to: "swift.test") { message in
-            // return "response"
+        let handler: (NatsMessage) -> Void = { message in
+            
         }
         
-        sleep(2)
+        guard let _ = try? client.subscribeSync(to: "swift.test", handler) else {
+            XCTFail("Subscription failed");
+            return
+        }
         
-        XCTAssertTrue(true, "Subscriber was not notified of connection")
+        client.disconnect()
+        
+    }
+    
+    func testClientSubscriptionInQueue() {
+        
+        let client = NatsClient(natsUrl)
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        
+        let handler: (NatsMessage) -> Void = { message in
+            
+        }
+        
+        guard let _ = try? client.subscribeSync(to: "swift.test", asPartOf: "swift_test_queue", handler) else {
+            XCTFail("Subscription failed");
+            return
+        }
+        
+        client.disconnect()
+        
+    }
+    
+    func testClientFlushQueue() {
+        
+        let client = NatsClient(natsUrl)
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        
+        guard let _ = try? client.flushQueue(maxWait: TimeInterval(2)) else {
+            XCTFail("Failed to flush queue");
+            return
+        }
         
         client.disconnect()
         
