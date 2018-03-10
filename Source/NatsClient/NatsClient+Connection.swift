@@ -15,34 +15,13 @@ extension NatsClient: NatsConnection {
         
         guard self.state != .connected else { return }
         
-        // If we have a list of `connectUrls` in our current server
-        // add them to the list of knownServers here so we can attempt
-        // to connect to them as well
-        var knownServers = self.urls
-        if let otherServers = self.server?.connectUrls {
-            otherServers.forEach { knownServers.append(URL(string: $0)!) }
-        }
+        let group = DispatchGroup()
+        group.enter()
         
-        var error: NatsError?
+        let thread = Thread(target: self, selector: #selector(self.setupConnection), object: group)
+        thread.start()
         
-        for server in knownServers {
-            do {
-                try self.openStream(to: server)
-            } catch let e as NatsError {
-                error = e
-                continue // to try next server
-            }
-            self.connectedUrl = server
-        }
-        
-        guard let _ = self.connectedUrl else {
-            self.disconnect()
-            if let e = error {
-                throw e
-            } else {
-                throw NatsConnectionError("Failed to connect to server")
-            }
-        }
+        group.wait()
 
         if self.server?.authRequired == true {
             try self.authenticateWithServer()
@@ -50,15 +29,6 @@ extension NatsClient: NatsConnection {
         
         self.state = .connected
         self.fire(.connected)
-        
-        guard let readStream = self.inputStream, let writeStream = self.outputStream else { return }
-        
-        for stream in [readStream, writeStream] {
-            stream.delegate = self
-            stream.schedule(in: .current, forMode: .defaultRunLoopMode)
-        }
-        
-        RunLoop.current.run(mode: .defaultRunLoopMode, before: Date.distantFuture)
         
     }
     
@@ -96,9 +66,56 @@ extension NatsClient: NatsConnection {
     
     // MARK - Private Methods
     
+    @objc
+    fileprivate func setupConnection(_ group: DispatchGroup) throws {
+        
+        // If we have a list of `connectUrls` in our current server
+        // add them to the list of knownServers here so we can attempt
+        // to connect to them as well
+        var knownServers = self.urls
+        if let otherServers = self.server?.connectUrls {
+            otherServers.forEach { knownServers.append(URL(string: $0)!) }
+        }
+        
+        var error: NatsError?
+        
+        for server in knownServers {
+            do {
+                try self.openStream(to: server)
+            } catch let e as NatsError {
+                error = e
+                continue // to try next server
+            }
+            self.connectedUrl = server
+        }
+        
+        guard let _ = self.connectedUrl else {
+            self.disconnect()
+            if let e = error {
+                throw e
+            } else {
+                throw NatsConnectionError("Failed to connect to server")
+            }
+        }
+        
+        guard let readStream = self.inputStream, let writeStream = self.outputStream else { return }
+        
+        for stream in [readStream, writeStream] {
+            stream.delegate = self
+            stream.schedule(in: .current, forMode: .defaultRunLoopMode)
+        }
+        
+        group.leave()
+        
+        RunLoop.current.run()
+        
+    }
+    
     fileprivate func openStream(to server: URL) throws {
         
-        guard let host = server.host, let port = server.port else { throw NatsConnectionError("Invalid url provided (\(server.absoluteString))") }
+        guard let host = server.host, let port = server.port else {
+            throw NatsConnectionError("Invalid url provided (\(server.absoluteString))")
+        }
                 
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
