@@ -18,6 +18,7 @@ public enum NatsEvent: String {
     case response = "response"
     case error = "error"
     case dropped = "dropped"
+    case reconnecting = "reconnecting"
 }
 
 internal enum NatsOperation: String {

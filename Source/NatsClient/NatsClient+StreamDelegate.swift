@@ -23,7 +23,6 @@ extension NatsClient: StreamDelegate {
                 }
                 break
             case [.errorOccurred, .endEncountered]:
-                self.disconnect()
                 self.retryConnection()
                 break
             default:

@@ -54,7 +54,8 @@ extension NatsClient: NatsConnection {
     // MARK - Internal Methods
     
     internal func retryConnection() {
-        // connectionRetryDelay
+        
+        self.fire(.reconnecting)
         var retryCount = 0
         
         if self.config.autoRetry {
@@ -67,7 +68,7 @@ extension NatsClient: NatsConnection {
             }
         }
         
-        self.fire(.disconnected)
+        self.disconnect()
     }
     
     // MARK - Private Methods
