@@ -85,11 +85,11 @@ protocol NatsSubscribe {
 protocol NatsPublish {
     func publish(_ payload: String, to subject: String)
     func publish(_ payload: String, to subject: NatsSubject)
-    func reply(toMessage message: NatsMessage, withPayload payload: String)
+    func reply(to message: NatsMessage, withPayload payload: String)
     
     func publishSync(_ payload: String, to subject: String) throws
     func publishSync(_ payload: String, to subject: NatsSubject) throws
-    func replySync(toMessage message: NatsMessage, withPayload payload: String) throws
+    func replySync(to message: NatsMessage, withPayload payload: String) throws
 }
 
 protocol NatsEventBus {

@@ -19,7 +19,7 @@ extension NatsClient: NatsPublish {
         publish(payload, to: subject.subject)
     }
     
-    open func reply(toMessage message: NatsMessage, withPayload payload: String) {
+    open func reply(to message: NatsMessage, withPayload payload: String) {
         guard let replySubject = message.replySubject else { return }
         publish(payload, to: replySubject.subject)
     }
@@ -50,7 +50,7 @@ extension NatsClient: NatsPublish {
         try publishSync(payload, to: subject.subject)
     }
     
-    open func replySync(toMessage message: NatsMessage, withPayload payload: String) throws {
+    open func replySync(to message: NatsMessage, withPayload payload: String) throws {
         guard let replySubject = message.replySubject else { return }
         try publishSync(payload, to: replySubject.subject)
     }
