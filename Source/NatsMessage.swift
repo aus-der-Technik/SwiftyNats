@@ -20,7 +20,7 @@ public struct NatsMessage {
         self.byteCount = byteCount
         self.subject = subject
         self.replySubject = replySubject
-        self.mid = UUID().uuidString
+        self.mid = String.hash()
     }
     
 }

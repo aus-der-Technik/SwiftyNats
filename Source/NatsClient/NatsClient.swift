@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NatsState {
+public enum NatsState {
     case connected
     case disconnected
 }
@@ -19,6 +19,7 @@ public enum NatsEvent: String {
     case error = "error"
     case dropped = "dropped"
     case reconnecting = "reconnecting"
+    static let all = [ connected, disconnected, response, error, dropped, reconnecting ]
 }
 
 internal enum NatsOperation: String {
@@ -44,7 +45,7 @@ open class NatsClient: NSObject {
     internal var outputStream: OutputStream?
     internal var server: NatsServer?
     internal var writeQueue = OperationQueue()
-    internal var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
+    internal var eventHandlerStore: [ NatsEvent: [ NatsEventHandler ] ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var messageQueue = OperationQueue()
     internal var state: NatsState = .disconnected
@@ -92,8 +93,11 @@ protocol NatsPublish {
 }
 
 protocol NatsEventBus {
-    func on(_ event: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void)
-    func on(_ envet: NatsEvent, _ handler: @escaping (NatsEvent) -> Void)
+    func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) -> String
+    func on(_ event: NatsEvent, _ handler: @escaping (NatsEvent) -> Void) -> String
+    func on(_ event: NatsEvent, autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String
+    func on(_ events: [NatsEvent], autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String
+    func off(_ id: String)
 }
 
 protocol NatsQueue {

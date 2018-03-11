@@ -1,5 +1,5 @@
 //
-//  NatsClient+Events.swift
+//  NatsClient+EventBus.swift
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
@@ -9,25 +9,37 @@ extension NatsClient: NatsEventBus {
     
     // MARK - Implement NatsEvents Protocol
     
-    open func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) {
+    @discardableResult
+    open func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) -> String {
         
-        for e in events {
-            on(e, handler)
-        }
+        return self.addListeners(for: events, using: handler)
 
     }
     
-    open func on(_ event: NatsEvent, _ handler: @escaping (NatsEvent) -> Void) {
+    @discardableResult
+    open func on(_ event: NatsEvent, _ handler: @escaping (NatsEvent) -> Void) -> String {
         
-        var handlerStore = self.eventHandlerStore[event]
+        return self.addListeners(for: [event], using: handler)
         
-        if handlerStore == nil {
-            handlerStore = []
-        }
+    }
+    
+    @discardableResult
+    open func on(_ event: NatsEvent, autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
         
-        handlerStore?.append(handler)
+        return self.addListeners(for: [event], using: handler, autoOff)
         
-        self.eventHandlerStore[event] = handlerStore
+    }
+    
+    @discardableResult
+    open func on(_ events: [NatsEvent], autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
+        
+        return self.addListeners(for: events, using: handler, autoOff)
+        
+    }
+    
+    open func off(_ id: String) {
+        
+        self.removeListener(id)
         
     }
     
@@ -36,11 +48,42 @@ extension NatsClient: NatsEventBus {
     internal func fire(_ event: NatsEvent) {
         
         guard let handlerStore = self.eventHandlerStore[event] else { return }
- 
-        handlerStore.forEach { $0(event) }
+
+        handlerStore.forEach {
+            $0.handler(event)
+            if $0.autoOff {
+                removeListener($0.listenerId)
+            }
+        }
         
-        if [.response, .error].contains(event) {
-            self.eventHandlerStore[event] = []
+    }
+    
+    // MARK - Implement private methods
+    
+    fileprivate func addListeners(for events: [NatsEvent], using handler: @escaping (NatsEvent) -> Void, _ autoOff: Bool = false) -> String {
+        
+        let id = String.hash()
+        
+        for event in events {
+            if self.eventHandlerStore[event] == nil {
+                self.eventHandlerStore[event] = []
+            }
+            self.eventHandlerStore[event]?.append(NatsEventHandler(lid: id, handler: handler, autoOff: autoOff))
+        }
+
+        return id
+        
+    }
+    
+    fileprivate func removeListener(_ id: String) {
+        
+        for event in NatsEvent.all {
+            
+            let handlerStore = self.eventHandlerStore[event]
+            if let store = handlerStore {
+                self.eventHandlerStore[event] = store.filter { $0.listenerId != id }
+            }
+            
         }
         
     }

@@ -18,7 +18,7 @@ public struct NatsSubject {
     }
     
     init(subject: String) {
-        let id = UUID().uuidString
+        let id = String.hash()
         self.init(subject: subject, id: id)
     }
     

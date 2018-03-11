@@ -77,16 +77,64 @@ class NatsClientTests: XCTestCase {
         
         let client = NatsClient(natsUrl)
         
-        var hasDisconnected = false
+        var state = "a"
         client.on(.disconnected) { _ in
-            hasDisconnected = true
+            state += "b"
         }
         
         guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         client.disconnect()
         
-        XCTAssertTrue(hasDisconnected, "Subscriber was not notified of disconnection")
+        XCTAssertTrue(state == "ab", "Subscriber was not notified of disconnection")
         
+    }
+    
+    func testClientEventOff() {
+        
+        let client = NatsClient(natsUrl)
+        
+        var state = "a"
+        let eid = client.on(.disconnected) { _ in
+            state += "b"
+        }
+        
+        client.off(eid)
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        client.disconnect()
+        
+        XCTAssertTrue(state == "a", "Subscriber was notified of connection and should not have been")
+        
+    }
+    
+    func testClientEventMultiple() {
+        
+        let client = NatsClient(natsUrl)
+        
+        var counter = 0
+        client.on([.connected, .disconnected]) { _ in
+            counter += 1
+        }
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        client.disconnect()
+        
+        XCTAssertTrue(counter == 2, "Subscriber was not notified of correct events")
+    }
+    
+    func testClientEventAutoOff() {
+        
+        let client = NatsClient(natsUrl)
+        
+        var counter = 0
+        client.on([.connected, .disconnected], autoOff: true) { _ in
+            counter += 1
+        }
+        
+        guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
+        client.disconnect()
+        
+        XCTAssertTrue(counter == 1, "Subscriber was notified of incorrect events after autoOff")
     }
     
     func testClientSubscription() {

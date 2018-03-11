@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		FC4724C020525DBD00D064D5 /* NatsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4724BF20525DBD00D064D5 /* NatsResponse.swift */; };
 		FC536444204A66E700B8FF9E /* NatsClient+Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */; };
+		FC61698C2055C17600903D67 /* NatsEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61698B2055C17600903D67 /* NatsEventHandler.swift */; };
 		OBJ_40 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_46 /* NatsClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* NatsClientTests.swift */; };
 		OBJ_47 /* StringExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* StringExtensionTests.swift */; };
@@ -65,6 +66,7 @@
 		FC4CE900204BB97B00CC6E9C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FC4CE901204BB9E800CC6E9C /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Queue.swift"; sourceTree = "<group>"; };
+		FC61698B2055C17600903D67 /* NatsEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsEventHandler.swift; sourceTree = "<group>"; };
 		OBJ_10 /* NatsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NatsError.swift; sourceTree = "<group>"; };
 		OBJ_11 /* Streams+Read+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streams+Read+Write.swift"; sourceTree = "<group>"; };
 		OBJ_12 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				OBJ_24 /* NatsServer.swift */,
 				OBJ_26 /* NatsSubject.swift */,
 				FC4724BF20525DBD00D064D5 /* NatsResponse.swift */,
+				FC61698B2055C17600903D67 /* NatsEventHandler.swift */,
 			);
 			name = Sources;
 			path = Source;
@@ -306,6 +309,7 @@
 				OBJ_66 /* NatsClientConfig.swift in Sources */,
 				OBJ_68 /* NatsMessage.swift in Sources */,
 				OBJ_70 /* NatsServer.swift in Sources */,
+				FC61698C2055C17600903D67 /* NatsEventHandler.swift in Sources */,
 				OBJ_72 /* NatsSubject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
