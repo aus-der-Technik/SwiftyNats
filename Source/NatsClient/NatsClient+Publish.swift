@@ -29,10 +29,10 @@ extension NatsClient: NatsPublish {
         let group = DispatchGroup()
         group.enter()
                 
-        var response: NatsResponse?
+        var response: NatsEvent?
         
-        DispatchQueue.global().async {
-            response = self.getResponseFromStream()
+        self.on([.response, .error], autoOff: true) { e in
+            response = e
             group.leave()
         }
         
@@ -40,8 +40,8 @@ extension NatsClient: NatsPublish {
         
         group.wait()
 
-        if response?.type == .error {
-            throw NatsPublishError(response?.message ?? "")
+        if response == .error {
+            throw NatsPublishError("Error response from server")
         }
         
     }

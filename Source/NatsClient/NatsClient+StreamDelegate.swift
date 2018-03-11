@@ -46,13 +46,6 @@ extension NatsClient {
         }
     }
     
-    internal func getResponseFromStream() -> NatsResponse {
-        guard let response = self.inputStream?.readStreamWhenReady() else {
-            return NatsResponse.error()
-        }
-        return NatsResponse(response)
-    }
-    
     // MARK - Implement Private Methods
     
     fileprivate func sendMessage(_ data: Data) {

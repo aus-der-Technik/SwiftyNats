@@ -48,10 +48,10 @@ extension NatsClient: NatsSubscribe {
         let group = DispatchGroup()
         group.enter()
         
-        var response: NatsResponse?
+        var response: NatsEvent?
         
-        DispatchQueue.global().async {
-            response = self.getResponseFromStream()
+        self.on([.response, .error], autoOff: true) { e in
+            response = e
             group.leave()
         }
         
@@ -59,8 +59,8 @@ extension NatsClient: NatsSubscribe {
         
         group.wait()
         
-        if response?.type == .error {
-            throw NatsSubscribeError(response?.message ?? "")
+        if response == .error {
+            throw NatsSubscribeError("Error response from server")
         }
         
         self.subjectHandlerStore[subject] = nil
@@ -84,10 +84,10 @@ extension NatsClient: NatsSubscribe {
         let group = DispatchGroup()
         group.enter()
         
-        var response: NatsResponse?
+        var response: NatsEvent?
         
-        DispatchQueue.global().async {
-            response = self.getResponseFromStream()
+        self.on([.response, .error], autoOff: true) { e in
+            response = e
             group.leave()
         }
         
@@ -96,8 +96,8 @@ extension NatsClient: NatsSubscribe {
         
         group.wait()
         
-        if response?.type == .error {
-            throw NatsSubscribeError(response?.message ?? "")
+        if response == .error {
+            throw NatsSubscribeError("Error response from server")
         }
         
         self.subjectHandlerStore[nsub] = handler
