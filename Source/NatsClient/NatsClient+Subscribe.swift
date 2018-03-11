@@ -11,6 +11,7 @@ extension NatsClient: NatsSubscribe {
     
     // MARK - Implement NatsSubscribe Protocol
     
+    @discardableResult
     open func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         
         let nsub = NatsSubject(subject: subject)
@@ -22,6 +23,7 @@ extension NatsClient: NatsSubscribe {
         return nsub
     }
     
+    @discardableResult
     open func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         
         let nsub = NatsSubject(subject: subject)
@@ -65,10 +67,12 @@ extension NatsClient: NatsSubscribe {
         
     }
     
+    @discardableResult
     open func subscribeSync(to subject: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
         return try subSync(to: subject, asPartOf: "", handler)
     }
     
+    @discardableResult
     open func subscribeSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
         return try subSync(to: subject, asPartOf: queue, handler)
     }
