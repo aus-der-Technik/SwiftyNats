@@ -5,7 +5,7 @@
 //  Created by Ray Krow on 2/27/18.
 //
 
-
+import Foundation
 
 public struct NatsClientConfig {
     
@@ -20,6 +20,7 @@ public struct NatsClientConfig {
     var autoRetry: Bool = false
     var autoRetryMax: Int = 3
     var internalQueueMax: Int = 100
+    var connectionRetryDelay: TimeInterval = 5
     
     init(
         verbose: Bool = false,

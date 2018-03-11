@@ -45,7 +45,6 @@ open class NatsClient: NSObject {
     internal var writeQueue = OperationQueue()
     internal var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
-    internal var autoRetryCount: Int = 0
     internal var messageQueue = OperationQueue()
     internal var state: NatsState = .disconnected
     internal var connectionError: NatsError?

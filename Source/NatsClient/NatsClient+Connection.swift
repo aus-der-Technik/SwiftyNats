@@ -54,14 +54,16 @@ extension NatsClient: NatsConnection {
     // MARK - Internal Methods
     
     internal func retryConnection() {
+        // connectionRetryDelay
+        var retryCount = 0
         
         if self.config.autoRetry {
-            while self.autoRetryCount < self.config.autoRetryMax {
+            while retryCount < self.config.autoRetryMax {
                 if let _ = try? self.connect() {
-                    self.autoRetryCount = 0
                     return
                 }
-                self.autoRetryCount += 1
+                retryCount += 1
+                usleep(UInt32(self.config.connectionRetryDelay))
             }
         }
         
