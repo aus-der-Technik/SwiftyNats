@@ -10,7 +10,7 @@ import Foundation
 extension NatsClient: NatsQueue {
     
     var queueCount: Int {
-        return self.messageQueue.count
+        return self.messageQueue.operationCount
     }
     
     private var waitTimeBetweenQueueCheck: UInt32 {
@@ -29,8 +29,9 @@ extension NatsClient: NatsQueue {
         DispatchQueue.global(qos: .default).async { [weak self] in
 
             guard let s = self else { group.leave(); return }
+            
             while true {
-                if s.messageQueue.count == 0 {
+                if s.queueCount == 0 {
                     break
                 }
                 if let mw = maxWait {
@@ -55,26 +56,8 @@ extension NatsClient: NatsQueue {
     }
     
     open func flushQueue() {
-        
-        let group = DispatchGroup()
-        group.enter()
-        
-        DispatchQueue.global(qos: .default).async { [weak self] in
-            // Wait for server to respond with +OK
-            guard let s = self else { group.leave(); return }
-            while true {
-                if s.messageQueue.count == 0 {
-                    break
-                }
-                sleep(s.waitTimeBetweenQueueCheck)
-            }
-            group.leave()
-        }
-        
         self.disconnect()
-        
-        group.wait()
-        
+        self.messageQueue.waitUntilAllOperationsAreFinished()
     }
 
 }

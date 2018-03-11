@@ -32,7 +32,7 @@
 		OBJ_58 /* Streams+Read+Write.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Streams+Read+Write.swift */; };
 		OBJ_59 /* String+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* String+Utilities.swift */; };
 		OBJ_60 /* NatsClient+Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* NatsClient+Connection.swift */; };
-		OBJ_61 /* NatsClient+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* NatsClient+Events.swift */; };
+		OBJ_61 /* NatsClient+EventBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* NatsClient+EventBus.swift */; };
 		OBJ_62 /* NatsClient+Publish.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* NatsClient+Publish.swift */; };
 		OBJ_63 /* NatsClient+StreamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* NatsClient+StreamDelegate.swift */; };
 		OBJ_64 /* NatsClient+Subscribe.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* NatsClient+Subscribe.swift */; };
@@ -69,7 +69,7 @@
 		OBJ_11 /* Streams+Read+Write.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Streams+Read+Write.swift"; sourceTree = "<group>"; };
 		OBJ_12 /* String+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utilities.swift"; sourceTree = "<group>"; };
 		OBJ_14 /* NatsClient+Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Connection.swift"; sourceTree = "<group>"; };
-		OBJ_15 /* NatsClient+Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Events.swift"; sourceTree = "<group>"; };
+		OBJ_15 /* NatsClient+EventBus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+EventBus.swift"; sourceTree = "<group>"; };
 		OBJ_16 /* NatsClient+Publish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Publish.swift"; sourceTree = "<group>"; };
 		OBJ_17 /* NatsClient+StreamDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+StreamDelegate.swift"; sourceTree = "<group>"; };
 		OBJ_18 /* NatsClient+Subscribe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NatsClient+Subscribe.swift"; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 				OBJ_14 /* NatsClient+Connection.swift */,
 				OBJ_16 /* NatsClient+Publish.swift */,
 				OBJ_18 /* NatsClient+Subscribe.swift */,
-				OBJ_15 /* NatsClient+Events.swift */,
+				OBJ_15 /* NatsClient+EventBus.swift */,
 				OBJ_17 /* NatsClient+StreamDelegate.swift */,
 				FC536443204A66E700B8FF9E /* NatsClient+Queue.swift */,
 			);
@@ -297,7 +297,7 @@
 				OBJ_58 /* Streams+Read+Write.swift in Sources */,
 				OBJ_59 /* String+Utilities.swift in Sources */,
 				OBJ_60 /* NatsClient+Connection.swift in Sources */,
-				OBJ_61 /* NatsClient+Events.swift in Sources */,
+				OBJ_61 /* NatsClient+EventBus.swift in Sources */,
 				FC536444204A66E700B8FF9E /* NatsClient+Queue.swift in Sources */,
 				OBJ_62 /* NatsClient+Publish.swift in Sources */,
 				OBJ_63 /* NatsClient+StreamDelegate.swift in Sources */,

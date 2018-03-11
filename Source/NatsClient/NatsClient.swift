@@ -34,7 +34,7 @@ internal enum NatsOperation: String {
 
 open class NatsClient: NSObject {
     
-    let urls: [URL]
+    var urls = [String]()
     var connectedUrl: URL?
     let config: NatsClientConfig
     
@@ -45,26 +45,22 @@ open class NatsClient: NSObject {
     internal var eventHandlerStore: [ NatsEvent: Array<(NatsEvent) -> Void> ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var autoRetryCount: Int = 0
-    internal var messageQueue: [NatsMessage] = []
+    internal var messageQueue = OperationQueue()
     internal var state: NatsState = .disconnected
+    internal var connectionError: NatsError?
     
-    public init(_ urls: [String], _ config: NatsClientConfig) {
+    public init(_ aUrls: [String], _ config: NatsClientConfig) {
 
-        var servers: [URL] = []
-        for url in urls {
-            servers.append(URL(string: url)!)
-        }
+        for u in aUrls { self.urls.append(u) }
         
-        self.urls = servers
         self.config = config
         
         writeQueue.maxConcurrentOperationCount = 1
     }
     
     public convenience init(_ url: String, _ config: NatsClientConfig? = nil) {
-        let urls = [ url ]
         let config = config ?? NatsClientConfig()
-        self.init(urls, config)
+        self.init([ url ], config)
     }
     
 }

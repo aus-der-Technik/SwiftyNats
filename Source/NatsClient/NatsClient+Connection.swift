@@ -23,6 +23,10 @@ extension NatsClient: NatsConnection {
         
         group.wait()
 
+        if let error = self.connectionError {
+            throw error
+        }
+
         if self.server?.authRequired == true {
             try self.authenticateWithServer()
         }
@@ -69,33 +73,28 @@ extension NatsClient: NatsConnection {
     @objc
     fileprivate func setupConnection(_ group: DispatchGroup) throws {
         
+        self.connectionError = nil
+        
         // If we have a list of `connectUrls` in our current server
         // add them to the list of knownServers here so we can attempt
         // to connect to them as well
         var knownServers = self.urls
         if let otherServers = self.server?.connectUrls {
-            otherServers.forEach { knownServers.append(URL(string: $0)!) }
+            knownServers.append(contentsOf: otherServers)
         }
-        
-        var error: NatsError?
         
         for server in knownServers {
             do {
                 try self.openStream(to: server)
             } catch let e as NatsError {
-                error = e
+                self.connectionError = e
                 continue // to try next server
             }
-            self.connectedUrl = server
+            self.connectedUrl = URL(string: server)
         }
         
-        guard let _ = self.connectedUrl else {
-            self.disconnect()
-            if let e = error {
-                throw e
-            } else {
-                throw NatsConnectionError("Failed to connect to server")
-            }
+        if let _ = self.connectionError {
+            group.leave()
         }
         
         guard let readStream = self.inputStream, let writeStream = self.outputStream else { return }
@@ -111,10 +110,14 @@ extension NatsClient: NatsConnection {
         
     }
     
-    fileprivate func openStream(to server: URL) throws {
+    fileprivate func openStream(to url: String) throws {
+        
+        guard let server = URL(string: url) else {
+            throw NatsConnectionError("Invalid url provided: (\(url))")
+        }
         
         guard let host = server.host, let port = server.port else {
-            throw NatsConnectionError("Invalid url provided (\(server.absoluteString))")
+            throw NatsConnectionError("Invalid url provided: (\(server.absoluteString))")
         }
                 
         var readStream: Unmanaged<CFReadStream>?

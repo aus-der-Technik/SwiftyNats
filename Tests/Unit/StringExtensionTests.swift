@@ -67,5 +67,37 @@ class StringExtensionTests: XCTestCase {
         }
     }
     
+    func testGetMessageType() {
+        
+        let testCases = [
+            "MSG subject.topic sid 1\r\na message\r\n": NatsOperation.message,
+            "+OK": NatsOperation.ok,
+            "-ERR detailed error message": NatsOperation.error,
+            "PING": NatsOperation.ping,
+            "PONG": NatsOperation.pong,
+            "PIGLET": nil
+        ]
+        
+        for (input, expected) in testCases {
+            let result = input.getMessageType()
+            XCTAssertTrue(result == expected, "String did not get correct message type")
+        }
+        
+    }
+    
+    func testParseOutMessages() {
+        
+        let testCases = [
+            "MSG subject.topic sid 1\r\na message\r\n+OK\r\nPONG\r\n": [ "MSG subject.topic sid 1\ra message\r", "+OK\r", "PONG\r" ],
+            "+OK\r\nPONG\r\n-ERR an error message\r\n": [ "+OK\r", "PONG\r", "-ERR an error message\r" ]
+        ]
+        
+        for (input, expected) in testCases {
+            let result = input.parseOutMessages()
+            XCTAssertTrue(result == expected, "String did not parse messages")
+        }
+        
+    }
+    
 }
 

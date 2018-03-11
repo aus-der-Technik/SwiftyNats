@@ -30,11 +30,28 @@ class NatsClientTests: XCTestCase {
         
         guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         
-        guard let _ = try? client.publishSync("a test message", to: "swift.test") else {
-            XCTFail("Publish failed")
-            return
+        let _ = client.subscribe(to: "swift.test") { m in
+            print("Recieved")
+            print(m.payload!)
         }
+        
+        client.publish("a test message", to: "swift.test")
+        client.publish("a second message", to: "swift.test")
+        client.publish("the final message", to: "swift.test")
 
+        sleep(1)
+        
+        let _ = client.subscribe(to: "swift.test.*") { m in
+            print("Recieved")
+            print(m.payload!)
+        }
+        
+        for _ in 0...10 {
+            client.publish("a test message", to: "swift.test.a")
+        }
+        
+        sleep(4)
+        
         client.disconnect()
         
     }

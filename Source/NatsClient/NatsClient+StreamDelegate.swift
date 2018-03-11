@@ -19,7 +19,7 @@ extension NatsClient: StreamDelegate {
             switch eventCode {
             case [.hasBytesAvailable]:
                 if let data = inputStream?.readStream() {
-                    self.handleIncomingMessage(data)
+                    self.handleIncomingMessageData(data)
                 }
                 break
             case [.errorOccurred, .endEncountered]:
@@ -68,20 +68,36 @@ extension NatsClient {
             stream.writeStreamWhenReady(data)
         }
     }
-    
-    fileprivate func handleIncomingMessage(_ data: Data) {
         
-        guard let message = data.toString() else { return }
+    fileprivate func handleIncomingMessageData(_ data: Data) {
         
-        if message.hasPrefix(NatsOperation.ping.rawValue) {
-            self.sendMessage(NatsMessage.pong())
-        } else if message.hasPrefix(NatsOperation.ok.rawValue) {
-            self.fire(.response)
-        } else if message.hasPrefix(NatsOperation.error.rawValue) {
-            self.fire(.error)
-        } else if message.hasPrefix(NatsOperation.message.rawValue) {
-            self.handleIncomingMessage(message)
+        guard let content = data.toString() else { return }
+        
+        let messages: [String] = content.parseOutMessages()
+        
+        for message in messages {
+            
+            guard let type = message.getMessageType() else { return }
+            
+            switch type {
+            case .ping:
+                self.sendMessage(NatsMessage.pong())
+                continue
+            case .ok:
+                self.fire(.response)
+                continue
+            case .error:
+                self.fire(.error)
+                continue
+            case .message:
+                self.handleIncomingMessage(message)
+                continue
+            default:
+                continue
+            }
+
         }
+
     }
     
     fileprivate func handleIncomingMessage(_ messageStr: String) {
@@ -90,23 +106,10 @@ extension NatsClient {
         
         guard let handler = self.subjectHandlerStore[message.subject] else { return }
         
-        self.messageQueue.append(message)
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let s = self else { return }
-            
-            // Ensure message still exists in the queue before calling handler
-            // if it does not exist, the queue was flushed and we should ignore it
-            let messageExists = s.messageQueue.contains { $0.mid == message.mid }
-            if messageExists { return }
-            
+        self.messageQueue.addOperation {
             handler(message)
-            
-            // Ensure the message is removed from the queue
-            // TODO: Find a faster way of doing this. Filter
-            // is not most performant to remove single item
-            s.messageQueue = s.messageQueue.filter { $0.mid != message.mid }
         }
+
     }
     
     fileprivate func parseMessage(_ message: String) -> NatsMessage? {
