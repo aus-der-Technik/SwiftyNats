@@ -102,6 +102,11 @@ extension NatsClient {
     
     fileprivate func handleIncomingMessage(_ messageStr: String) {
         
+        if self.queueCount > self.config.internalQueueMax {
+            self.fire(.dropped)
+            return
+        }
+        
         guard let message = parseMessage(messageStr) else { return }
         
         guard let handler = self.subjectHandlerStore[message.subject] else { return }

@@ -17,20 +17,17 @@ public struct NatsClientConfig {
     let version: String = "1.0.0-alpha"
     
     // Internal config vars
-    let autoRetry: Bool
-    let autoRetryMax: Int
+    var autoRetry: Bool = false
+    var autoRetryMax: Int = 3
+    var internalQueueMax: Int = 100
     
     init(
         verbose: Bool = false,
         pedantic: Bool = false,
-        name: String = "SwiftyNats",
-        autoRetry: Bool = false,
-        autoRetryMax: Int = 3
+        name: String = "SwiftyNats"
     ) {
         self.verbose = verbose
         self.pedantic = pedantic
         self.name = name
-        self.autoRetry = autoRetry
-        self.autoRetryMax = autoRetryMax
     }
 }
