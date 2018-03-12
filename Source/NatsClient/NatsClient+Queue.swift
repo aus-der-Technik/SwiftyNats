@@ -9,55 +9,34 @@ import Foundation
 
 extension NatsClient: NatsQueue {
     
-    var queueCount: Int {
+    public var queueCount: Int {
         return self.messageQueue.operationCount
     }
     
     private var waitTimeBetweenQueueCheck: UInt32 {
-        return UInt32(0.10)
+        return 500 // milliseconds
     }
     
     open func flushQueue(maxWait: TimeInterval? = nil) throws {
         
-        let startTimestamp = Date().timeIntervalSinceNow
-        
-        let group = DispatchGroup()
-        group.enter()
-        
-        var error: NatsTimeoutError?
-        
-        DispatchQueue.global(qos: .default).async { [weak self] in
-
-            guard let s = self else { group.leave(); return }
-            
-            while true {
-                if s.queueCount == 0 {
-                    break
-                }
-                if let mw = maxWait {
-                    if Date().timeIntervalSinceNow - startTimestamp > mw {
-                        error = NatsTimeoutError("Could not handle all messages in queue before max time limit reached")
-                        break
-                    }
-                }
-                sleep(s.waitTimeBetweenQueueCheck)
-            }
-            group.leave()
-        }
+        let startTimestamp = Date().timeIntervalSinceReferenceDate
         
         self.disconnect()
         
-        group.wait()
-        
-        if let e = error {
-            throw e
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            self?.messageQueue.waitUntilAllOperationsAreFinished()
+        }
+
+        while true {
+            if self.queueCount == 0 { break }
+            if let maxSeconds = maxWait {
+                if Date().timeIntervalSinceReferenceDate - startTimestamp > maxSeconds {
+                    throw NatsTimeoutError("Could not handle all messages in queue before max time limit reached")
+                }
+            }
+            usleep(self.waitTimeBetweenQueueCheck)
         }
         
     }
     
-    open func flushQueue() {
-        self.disconnect()
-        self.messageQueue.waitUntilAllOperationsAreFinished()
-    }
-
 }

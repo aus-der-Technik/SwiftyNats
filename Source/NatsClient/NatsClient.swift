@@ -103,6 +103,5 @@ protocol NatsEventBus {
 protocol NatsQueue {
     var queueCount: Int { get }
     func flushQueue(maxWait: TimeInterval?) throws
-    func flushQueue()
 }
 

@@ -181,12 +181,24 @@ class NatsClientTests: XCTestCase {
         
         guard let _ = try? client.connect() else { XCTFail("Connection failed"); return }
         
-        guard let _ = try? client.flushQueue(maxWait: TimeInterval(2)) else {
-            XCTFail("Failed to flush queue");
+        /*
+        *   Manually insert sleepy operations into operation queue
+        */
+        for _ in 0...50 {
+            client.messageQueue.addOperation { sleep(1) } // 1 second
+        }
+        
+        /*
+        *   Flush the queue and make sure the maxWait throws timeout
+        */
+        guard let _ = try? client.flushQueue(maxWait: TimeInterval(1)) else {
+            client.disconnect()
             return
         }
         
         client.disconnect()
+        
+        XCTFail("Timeout in queue flush was not hit")
         
     }
     
