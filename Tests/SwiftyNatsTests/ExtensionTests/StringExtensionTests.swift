@@ -18,6 +18,15 @@ class StringExtensionTests: XCTestCase {
         super.tearDown()
     }
     
+    static var allTests = [
+        ("testRemovePrefix", testRemovePrefix),
+        ("testToJsonDicitonary", testToJsonDicitonary),
+        ("testRemoveNewlines", testRemoveNewlines),
+        ("testGetMessageType", testGetMessageType),
+        ("testParseOutMessages", testParseOutMessages)
+    ]
+
+    
     func testRemovePrefix() {
         
         let testGroups = [

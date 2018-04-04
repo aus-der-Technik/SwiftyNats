@@ -24,6 +24,18 @@ class NatsClientTests: XCTestCase {
         
     }
     
+    func testClientBadConnection() {
+        
+        let client = NatsClient("nats.oakudo.com")
+        
+        try? client.connect()
+        XCTAssertTrue(client.state == .connected, "Client did not connect")
+        
+        client.disconnect()
+        XCTAssertTrue(client.state == .disconnected, "Client did not disconnect")
+        
+    }
+    
     func testClientPublish() {
         
         let client = NatsClient(natsUrl)
