@@ -9,6 +9,7 @@ import Foundation
 
 extension Data {
     func toString() -> String? {
-        return NSString(data: self, encoding: String.Encoding.utf8.rawValue) as String?
+        guard let nss = NSString(data: self, encoding: String.Encoding.utf8.rawValue) else { return nil }
+        return String(describing: nss)
     }
 }
