@@ -7,9 +7,11 @@ let package = Package(
     products: [
         .library(name: "SwiftyNats", targets: ["SwiftyNats"])
     ],
-    dependencies: [ ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-nio.git", from: "1.3.1")
+    ],
     targets: [
-        .target(name: "SwiftyNats", path: "Source"),
+        .target(name: "SwiftyNats", dependencies: ["NIO"], path: "Source"),
         .testTarget(name: "SwiftyNatsTest", dependencies: ["SwiftyNats"], path: "Tests")
     ]
 )

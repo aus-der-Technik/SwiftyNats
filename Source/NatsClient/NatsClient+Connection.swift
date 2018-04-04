@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NIO
 
 extension NatsClient: NatsConnection {
     
