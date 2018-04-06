@@ -73,7 +73,8 @@ extension NatsClient: NatsConnection {
     }
 
     // MARK - Private Methods
-
+    
+    @objc
     fileprivate func setupConnection() {
 
         self.connectionError = nil
