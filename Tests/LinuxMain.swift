@@ -6,13 +6,10 @@
 //
 
 
-#if os(Linux)
-
 import XCTest
 @testable import SwiftyNatsTests
 
 XCTMain([
     testCase(StringExtensionTests.allTests),
+    testCase(NatsMessageTests.allTests)
 ])
-
-#endif

@@ -11,7 +11,7 @@ extension String {
     
     static func hash() -> String {
         let uuid = String.uuid()
-        return uuid[0...8]
+        return uuid[0...7]
     }
     
     static func uuid() -> String {

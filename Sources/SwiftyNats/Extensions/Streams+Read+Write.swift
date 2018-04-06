@@ -8,15 +8,15 @@
 import Foundation
 
 extension InputStream {
-    
+
     func readStream() -> Data? {
-        
+
         let max_buffer = 4096
         var dataQueue = [Data]()
         var length = max_buffer
         let buf = NSMutableData(capacity: max_buffer)
         let buffer = UnsafeMutablePointer<UInt8>(mutating: buf!.bytes.bindMemory(to: UInt8.self, capacity: buf!.length))
-        
+
         // read stream per max_buffer
         while length > 0 {
             length = self.read(buffer, maxLength: max_buffer)
@@ -24,18 +24,18 @@ extension InputStream {
             dataQueue.append(Data(bytes: UnsafePointer<UInt8>(buffer), count: length))
             if length < max_buffer { break }
         }
-        
+
         guard !dataQueue.isEmpty else { return nil }
-        
+
         let data = dataQueue.reduce(Data(), {
-            var combined = NSData(data: $0) as Data
+            var combined = Data(referencing: NSData(data: $0))
             combined.append($1)
             return combined
         })
-        
+
         return data
     }
-    
+
     func readStreamWhenReady() -> String? {
         while (true) {
             if self.hasBytesAvailable {
@@ -43,19 +43,19 @@ extension InputStream {
             }
             if (self.streamError != nil) { break }
         }
-        
+
         return nil
     }
-    
+
 }
 
 extension OutputStream {
-    
+
     func writeStream(_ data: Data) {
-        let bytes = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
+        let bytes = NSData(data: data).bytes.bindMemory(to: UInt8.self, capacity: data.count)
         _ = self.write(bytes, maxLength: data.count)
     }
-    
+
     func writeStreamWhenReady(_ data: Data) {
         while (true) {
             if self.hasSpaceAvailable {
@@ -65,5 +65,5 @@ extension OutputStream {
             if self.streamError != nil { break }
         }
     }
-    
+
 }
