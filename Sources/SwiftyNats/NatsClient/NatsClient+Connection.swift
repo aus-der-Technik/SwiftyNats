@@ -24,7 +24,7 @@ extension NatsClient: NatsConnection {
         #if os(Linux)
         thread = Thread { self.setupConnection() }
         #else
-        thread = Thread(target: self, selector: #selector(self.setupConnection))
+        thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
         #endif
 
         thread?.start()
