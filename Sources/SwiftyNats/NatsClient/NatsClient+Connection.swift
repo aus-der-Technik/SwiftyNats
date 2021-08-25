@@ -74,11 +74,8 @@ extension NatsClient: NatsConnection {
 
     // MARK - Private Methods
     
-    @objc
-    fileprivate func setupConnection() {
-
+    fileprivate func _setupConnection() {
         self.connectionError = nil
-
         // If we have a list of `connectUrls` in our current server
         // add them to the list of knownServers here so we can attempt
         // to connect to them as well
@@ -86,7 +83,6 @@ extension NatsClient: NatsConnection {
         if let otherServers = self.server?.connectUrls {
             knownServers.append(contentsOf: otherServers)
         }
-
         for server in knownServers {
             do {
                 try self.openStream(to: server)
@@ -100,13 +96,20 @@ extension NatsClient: NatsConnection {
             self.connectedUrl = URL(string: server)
             break // If we got here then we connected successfully, break out of here and stop trying servers
         }
-
         self.dispatchGroup.leave()
-
         RunLoop.current.run()
-
     }
-
+    
+    #if os(macOS)
+    @objc fileprivate func setupConnection() {
+        _setupConnection()
+    }
+    #else
+    fileprivate func setupConnection() {
+        _setupConnection()
+    }
+    #endif
+    
     fileprivate func openStream(to url: String) throws {
 
         guard let server = URL(string: url) else {
