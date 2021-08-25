@@ -22,12 +22,12 @@ let package = Package(
         .library(name: "YourApp", targets: ["YourApp"])
     ],
     dependencies: [
-        .package(url: "https://github.com/raykrow/swifty-nats.git", from: "1.0.0")
+        .package(name: "SwiftyNats", url: "https://github.com/petershaw/swifty-nats.git", from: "2.0.0")
     ],
     targets: [
         .target(
             name: "YourApp",
-            dependencies: ["SwiftyClient"]
+            dependencies: ["SwiftyNats"]
         ),
     ]
 )
