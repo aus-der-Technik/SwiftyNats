@@ -8,7 +8,7 @@
 import Foundation
 
 public struct NatsMessage {
-
+    
     public let payload: String?
     public let byteCount: UInt32?
     public let subject: NatsSubject
@@ -51,8 +51,7 @@ extension NatsMessage {
     
     internal static func parse(_ message: String) -> NatsMessage? {
         
-        print("### PARSING ###")
-        print(message)
+        //logger.debug("### PARSING ###", message)
         
         let components = message.components(separatedBy: CharacterSet.newlines).filter { !$0.isEmpty }
         
