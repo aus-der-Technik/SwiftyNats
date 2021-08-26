@@ -6,15 +6,25 @@
 //
 
 import Foundation
+import Logging
+
+var logger = Logger(label: "nats-client")
 
 public struct NatsClientConfig {
+    
+    // logging
+    var loglevel: Logger.Level = .error {
+        didSet {
+            logger.logLevel = loglevel
+        }
+    }
     
     // Required for nats server
     let verbose: Bool
     let pedantic: Bool
     let name: String
     let lang: String = "Swift"
-    let version: String = "1.0.0-alpha"
+    let version: String = "2.0.0"
     
     // Internal config vars
     var autoRetry: Bool = false
@@ -25,10 +35,15 @@ public struct NatsClientConfig {
     init(
         verbose: Bool = false,
         pedantic: Bool = false,
-        name: String = "SwiftyNats"
+        name: String = "SwiftyNats",
+        loglevel: Logger.Level? = .error
     ) {
         self.verbose = verbose
         self.pedantic = pedantic
         self.name = name
+
+        if let level = loglevel {
+            self.loglevel = level
+        }
     }
 }

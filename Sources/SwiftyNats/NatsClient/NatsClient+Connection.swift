@@ -14,7 +14,7 @@ extension NatsClient: NatsConnection {
     // MARK - Implement NatsConnection Protocol
 
     open func connect() throws {
-
+        logger.debug("connect")
         guard self.state != .connected else { return }
 
         self.dispatchGroup.enter()

@@ -51,7 +51,7 @@ extension NatsMessage {
     
     internal static func parse(_ message: String) -> NatsMessage? {
         
-        //logger.debug("### PARSING ###", message)
+        logger.debug("Parsing message: \(message)")
         
         let components = message.components(separatedBy: CharacterSet.newlines).filter { !$0.isEmpty }
         

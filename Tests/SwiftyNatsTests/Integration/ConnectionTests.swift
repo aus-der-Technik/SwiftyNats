@@ -42,5 +42,14 @@ class ConnectionTests: XCTestCase {
         XCTAssertTrue(client.state == .disconnected, "Client should not have connected")
 
     }
+    
+    func testClientConnectionLogging() {
+
+        let client = NatsClient(TestSettings.natsUrl)
+        client.config.loglevel = .trace
+        try? client.connect()
+        XCTAssertTrue(client.state == .connected, "Client did not connect")
+
+    }
 
 }

@@ -42,7 +42,7 @@ open class NatsClient: NSObject {
 
     var urls = [String]()
     var connectedUrl: URL?
-    let config: NatsClientConfig
+    var config: NatsClientConfig
 
     internal var server: NatsServer?
     internal var writeQueue = OperationQueue()
@@ -60,15 +60,16 @@ open class NatsClient: NSObject {
         for u in aUrls { self.urls.append(u) }
 
         self.config = config
-
+        
         writeQueue.maxConcurrentOperationCount = 1
+        logger.debug("Init NatsClient with config: \(config)")
     }
 
     public convenience init(_ url: String, _ config: NatsClientConfig? = nil) {
         let config = config ?? NatsClientConfig()
         self.init([ url ], config)
     }
-
+    
 }
 
 protocol NatsConnection {
