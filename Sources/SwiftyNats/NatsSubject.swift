@@ -12,6 +12,12 @@ public struct NatsSubject {
     let subject: String
     let id: String
     
+    public var description: String {
+        get {
+            return subject
+        }
+    }
+    
     init(subject: String, id: String) {
         self.subject = subject
         self.id = id
@@ -21,6 +27,7 @@ public struct NatsSubject {
         let id = String.hash()
         self.init(subject: subject, id: id)
     }
+    
     
 }
 
@@ -32,3 +39,4 @@ extension NatsSubject: Hashable {
         return self.id.hashValue
     }
 }
+
