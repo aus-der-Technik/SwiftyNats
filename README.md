@@ -70,3 +70,10 @@ client.publish("this event happened", to: "foo.bar")
 let client = NatsClient("http://nats.server:4222")
 client.config.loglevel = .info
 ```
+
+# Changelog
+
+## 2.0.0 
+- Tested with NATS 2.3.4
+- Introduced logging
+- Updated depricated functions  
