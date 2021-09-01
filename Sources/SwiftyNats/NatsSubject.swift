@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -35,8 +36,9 @@ extension NatsSubject: Hashable {
     public static func ==(lhs: NatsSubject, rhs: NatsSubject) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
-    public var hashValue: Int {
-        return self.id.hashValue
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id.hashValue)
     }
 }
 

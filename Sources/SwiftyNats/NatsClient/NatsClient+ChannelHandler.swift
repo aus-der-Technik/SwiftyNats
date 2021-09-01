@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 4/4/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -54,7 +55,7 @@ extension NatsClient: ChannelInboundHandler {
 
 extension NatsClient {
 
-    // MARK - Implement Internal Methods
+    // MARK: - Implement Internal Methods
 
     internal func sendMessage(_ message: String) {
 
@@ -66,7 +67,7 @@ extension NatsClient {
 
     }
 
-    // MARK - Implement Private Methods
+    // MARK: - Implement Private Methods
 
     fileprivate func updateServerInfo(with info: String) -> Void {
         // TODO: CP - Possibly quit here if reading the config failed.

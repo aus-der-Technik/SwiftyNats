@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -10,11 +11,11 @@ import Dispatch
 
 extension NatsClient: NatsSubscribe {
 
-    // MARK - Implement NatsSubscribe Protocol
+    // MARK: - Implement NatsSubscribe Protocol
 
     @discardableResult
     open func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
-
+        logger.info("subscribe to subject \(subject)")
         let nsub = NatsSubject(subject: subject)
 
         self.sendMessage(NatsMessage.subscribe(subject: nsub.subject, sid: nsub.id))
@@ -26,7 +27,7 @@ extension NatsClient: NatsSubscribe {
 
     @discardableResult
     open func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
-
+        logger.info("subscribe to subject \(subject)")
         let nsub = NatsSubject(subject: subject)
 
         self.sendMessage(NatsMessage.subscribe(subject: nsub.subject, sid: nsub.id, queue: queue))
@@ -38,14 +39,14 @@ extension NatsClient: NatsSubscribe {
     }
 
     open func unsubscribe(from subject: NatsSubject) {
-
+        logger.info("unsubscribe from subject \(subject)")
         self.sendMessage(NatsMessage.unsubscribe(sid: subject.id))
         self.subjectHandlerStore[subject] = nil
 
     }
 
     open func unsubscribeSync(from subject: NatsSubject) throws {
-
+        logger.info("unsubscribe syncrnon from subject \(subject)")
         let group = DispatchGroup()
         group.enter()
 
@@ -78,10 +79,10 @@ extension NatsClient: NatsSubscribe {
         return try subSync(to: subject, asPartOf: queue, handler)
     }
 
-    // MARK - Private methods
+    // MARK: - Private methods
 
     private func subSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
-
+        logger.info("subscribe synchronous from subject \(subject)")
         let group = DispatchGroup()
         group.enter()
 

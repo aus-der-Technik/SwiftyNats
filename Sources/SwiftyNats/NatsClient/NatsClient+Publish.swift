@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -10,9 +11,10 @@ import Dispatch
 
 extension NatsClient: NatsPublish {
 
-    // MARK - Implement NatsPublish Protocol
+    // MARK: - Implement NatsPublish Protocol
 
     open func publish(_ payload: String, to subject: String) {
+        logger.info("publish \(payload.count) characters to subject \(subject)")
         sendMessage(NatsMessage.publish(payload: payload, subject: subject))
     }
 
@@ -22,6 +24,7 @@ extension NatsClient: NatsPublish {
 
     open func reply(to message: NatsMessage, withPayload payload: String) {
         guard let replySubject = message.replySubject else { return }
+        logger.info("reply \(payload.count) characters to subject \(replySubject.subject)")
         publish(payload, to: replySubject.subject)
     }
 

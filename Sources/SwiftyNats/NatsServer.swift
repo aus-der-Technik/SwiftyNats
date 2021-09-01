@@ -2,16 +2,17 @@
 //  NatsServer.swift
 //  SwiftyNats
 //
-//  Created by Kris Simon on 8/25/21.
+//  updated by aus der Technik, 2021
 //
+
 import Foundation
 
 struct NatsServer {
     
     let host: String
-    let clientIp: String
-    let clientId: UInt
     let port: UInt
+    let clientIp: String?
+    let clientId: UInt?
     let serverName: String
     let serverId: String
     let maxPayload: UInt
@@ -28,15 +29,15 @@ struct NatsServer {
     
     init(_ data: [String: AnyObject]) {
         self.host = data["host"] as! String
-        self.clientIp = data["client_ip"] as? String ?? ""
-        self.clientId = data["client_id"] as? UInt ?? 0
         self.port = data["port"] as! UInt
-        self.serverName = data["server_name"] as? String ?? ""
-        self.serverId = data["server_id"] as? String ?? UUID().uuidString
-        self.maxPayload = data["max_payload"] as? UInt ?? 0
+        self.clientIp = data["client_ip"] as? String
+        self.clientId = data["client_id"] as? UInt
+        self.serverName = data["server_name"] as! String
+        self.serverId = data["server_id"] as! String
+        self.maxPayload = data["max_payload"] as! UInt
         self.version = data["version"] as? String ?? "0.0.0"
         self.go = data["go"] as? String ?? ""
-        self.proto = data["proto"] as? UInt ?? 0
+        self.proto = data["proto"] as! UInt
         self.gitCommit = data["git_commit"] as? String ?? ""
         
         self.authRequired = data["auth_required"] as? Bool ?? false
@@ -44,7 +45,6 @@ struct NatsServer {
         
         self.connectUrls = data["connect_urls"] as? [String]
         self.tlsVerify = data["tls_verify"] as? Bool
-        
     }
     
 }

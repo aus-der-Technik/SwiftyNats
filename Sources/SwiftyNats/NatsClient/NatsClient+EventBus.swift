@@ -3,11 +3,12 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 extension NatsClient: NatsEventBus {
     
-    // MARK - Implement NatsEvents Protocol
+    // MARK: - Implement NatsEvents Protocol
     
     @discardableResult
     open func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) -> String {
@@ -43,7 +44,7 @@ extension NatsClient: NatsEventBus {
         
     }
     
-    // MARK - Implement internal methods
+    // MARK: - Implement internal methods
     
     internal func fire(_ event: NatsEvent) {
         
@@ -58,7 +59,7 @@ extension NatsClient: NatsEventBus {
         
     }
     
-    // MARK - Implement private methods
+    // MARK: - Implement private methods
     
     fileprivate func addListeners(for events: [NatsEvent], using handler: @escaping (NatsEvent) -> Void, _ autoOff: Bool = false) -> String {
         

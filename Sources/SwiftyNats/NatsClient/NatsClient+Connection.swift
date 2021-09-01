@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -11,10 +12,10 @@ import Dispatch
 
 extension NatsClient: NatsConnection {
 
-    // MARK - Implement NatsConnection Protocol
+    // MARK: - Implement NatsConnection Protocol
 
     open func connect() throws {
-        logger.debug("connect")
+        logger.debug("try to connect")
         guard self.state != .connected else { return }
 
         self.dispatchGroup.enter()
@@ -45,22 +46,22 @@ extension NatsClient: NatsConnection {
     }
 
     open func disconnect() {
-
+        logger.debug("will disconnect")
         try? self.channel?.close().wait()
         try? self.group.syncShutdownGracefully()
         self.state = .disconnected
         self.fire(.disconnected)
     }
 
-    // MARK - Internal Methods
+    // MARK: - Internal Methods
 
     internal func retryConnection() {
-
         self.fire(.reconnecting)
         var retryCount = 0
 
         if self.config.autoRetry {
             while retryCount < self.config.autoRetryMax {
+                logger.debug("retry \(retryCount + 1)/\(self.config.autoRetryMax) to connect")
                 if let _ = try? self.connect() {
                     return
                 }
@@ -72,7 +73,7 @@ extension NatsClient: NatsConnection {
         self.disconnect()
     }
 
-    // MARK - Private Methods
+    // MARK: - Private Methods
     
     fileprivate func _setupConnection() {
         self.connectionError = nil

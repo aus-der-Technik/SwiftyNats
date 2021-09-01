@@ -3,12 +3,14 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
 import Logging
 
 var logger = Logger(label: "nats-client")
+var libVersion = "2.0"
 
 public struct NatsClientConfig {
     
@@ -35,7 +37,7 @@ public struct NatsClientConfig {
     init(
         verbose: Bool = false,
         pedantic: Bool = false,
-        name: String = "SwiftyNats",
+        name: String = "SwiftyNats \(libVersion)",
         loglevel: Logger.Level? = .error
     ) {
         self.verbose = verbose

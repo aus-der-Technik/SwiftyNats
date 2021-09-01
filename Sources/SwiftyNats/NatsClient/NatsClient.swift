@@ -3,6 +3,7 @@
 //  SwiftyNats
 //
 //  Created by Ray Krow on 2/27/18.
+//  updated by aus der Technik, 2021
 //
 
 import Foundation
@@ -51,7 +52,7 @@ open class NatsClient: NSObject {
     internal var messageQueue = OperationQueue()
     internal var state: NatsState = .disconnected
     internal var connectionError: NatsError?
-    internal let group = MultiThreadedEventLoopGroup(numThreads: 1)
+    internal let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     internal var channel: Channel?
     internal let dispatchGroup = DispatchGroup()
 
