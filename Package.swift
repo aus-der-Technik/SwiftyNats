@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.4
 
 import PackageDescription
 
@@ -13,7 +13,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "SwiftyNats", dependencies: [
-            "NIO",
+            .product(name: "NIO", package: "swift-nio"),
             .product(name: "Logging", package: "swift-log"),
         ]),
         .testTarget(name: "SwiftyNatsTests", dependencies: ["SwiftyNats"])
