@@ -50,6 +50,7 @@ extension NatsClient: NatsConnection {
         try? self.channel?.close().wait()
         try? self.group.syncShutdownGracefully()
         self.state = .disconnected
+        self.server = nil
         self.fire(.disconnected)
     }
 

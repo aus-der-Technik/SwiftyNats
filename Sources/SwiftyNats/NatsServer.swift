@@ -7,25 +7,36 @@
 
 import Foundation
 
-struct NatsServer {
+public struct NatsServer {
     
-    let host: String
-    let port: UInt
-    let clientIp: String?
-    let clientId: UInt?
-    let serverName: String
-    let serverId: String
-    let maxPayload: UInt
-    let version: String
-    let go: String
-    let proto: UInt
-    let gitCommit: String?
+    /// The host  the connected NATS server is listening on
+    public let host: String
+    
+    /// The port of the connected NATS server the sessionis connected to.
+    public let port: UInt
+    
+    public let clientIp: String?
+    public let clientId: UInt?
+    
+    /// The name of the NATS server the session is connected to.
+    public let serverName: String
+    
+    /// The ID of the server the session is connected to.
+    public let serverId: String
+    
+    public let maxPayload: UInt
+    
+    /// The version of the NATS server the session is connected to.
+    public let version: String
+    public let go: String
+    public let proto: UInt
+    public let gitCommit: String?
 
-    let authRequired: Bool?
-    let sslRequired: Bool?
+    public let authRequired: Bool?
+    public let sslRequired: Bool?
 
-    let connectUrls: [String]?
-    let tlsVerify: Bool?
+    public let connectUrls: [String]?
+    public let tlsVerify: Bool?
     
     init(_ data: [String: AnyObject]) {
         self.host = data["host"] as! String
@@ -46,5 +57,5 @@ struct NatsServer {
         self.connectUrls = data["connect_urls"] as? [String]
         self.tlsVerify = data["tls_verify"] as? Bool
     }
-    
+
 }

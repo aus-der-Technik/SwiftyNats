@@ -55,7 +55,7 @@ client.publish("this event happened", to: "foo.bar")
 
 ```
 
-## Setting the loglevel
+### Setting the loglevel
 
 The default loglevel is `.error`. You can reset it to see more verbose messages. Possible
 Values are `.debug`, `.info`, `.error` or `.critical`
@@ -63,6 +63,15 @@ Values are `.debug`, `.info`, `.error` or `.critical`
 ```swift
 let client = NatsClient("http://nats.server:4222")
 client.config.loglevel = .info
+```
+
+### Information about the connected server
+
+Since 2.0.2 it is possible to get the informations from the conencted server
+
+```swift
+let client = NatsClient("http://nats.server:4222")
+print("\(client.serverInformation.serverName) has Version: \(client.serverInformation.version))");
 ```
 
 ## Why this repository 
@@ -80,6 +89,9 @@ Contribution is always welcome. Just send me a pull request.
 
 
 # Changelog
+
+## 2.0.2
+- Get information from the connected Server (Version, name, id, ...)
 
 ## 2.0.1 
 - Test with GitHub Actions 
