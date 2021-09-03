@@ -102,7 +102,7 @@ extension NatsClient: NatsConnection {
         RunLoop.current.run()
     }
     
-    #if os(macOS)
+    #if os(macOS) || os(tvOS) || os(iOS)
     @objc fileprivate func setupConnection() {
         _setupConnection()
     }
