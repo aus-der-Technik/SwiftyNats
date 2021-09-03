@@ -1,6 +1,8 @@
 # SwiftyNats
 A swift client for interacting with a [nats](http://nats.io) server.
 
+![SwiftyNats Logo](./Resources/Logo@256.png)
+
 Tested with Swift 5.4 on [![macos](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml) and [![Linux](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml)
 
 ## Support
