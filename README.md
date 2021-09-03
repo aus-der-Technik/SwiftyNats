@@ -3,6 +3,9 @@ A swift client for interacting with a [nats](http://nats.io) server.
 
 Tested with Swift 5.4 on [![macos](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml) and [![Linux](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml)
 
+## Support
+Join the [#swift](https://natsio.slack.com/archives/C02D41BU0PQ) channel on nats.io Slack. 
+We'll do our best to help quickly. Also feel free to drop by to just say hi. 
 
 ## Installation
 Use SPM to install this packages as a dependency in your projects `Package.swift` file .
