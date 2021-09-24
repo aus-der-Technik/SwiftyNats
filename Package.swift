@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.0
 
 import PackageDescription
 
@@ -8,13 +8,13 @@ let package = Package(
         .library(name: "SwiftyNats", targets: ["SwiftyNats"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-nio.git", from: "1.3.1"),
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.4.2"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.0.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.4.2")
     ],
     targets: [
         .target(name: "SwiftyNats", dependencies: [
             .product(name: "NIO", package: "swift-nio"),
-            .product(name: "Logging", package: "swift-log"),
+            .product(name: "Logging", package: "swift-log")
         ]),
         .testTarget(name: "SwiftyNatsTests", dependencies: ["SwiftyNats"])
     ]

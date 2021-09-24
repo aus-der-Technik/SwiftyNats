@@ -13,7 +13,7 @@ extension NatsClient: ChannelInboundHandler {
 
     public typealias InboundIn = ByteBuffer
 
-    public func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
 
         var buffer = self.unwrapInboundIn(data)
         guard let messages = buffer.readString(length: buffer.readableBytes)?.parseOutMessages() else { return }
@@ -45,9 +45,9 @@ extension NatsClient: ChannelInboundHandler {
         }
     }
 
-    public func errorCaught(ctx: ChannelHandlerContext, error: Error) {
+    public func errorCaught(context: ChannelHandlerContext, error: Error) {
         self.disconnect()
-        ctx.close(promise: nil)
+        context.close(promise: nil)
         self.fire(.disconnected)
     }
 }
@@ -62,7 +62,7 @@ extension NatsClient {
         guard self.state == .connected else { return }
 
         var buffer = self.channel?.allocator.buffer(capacity: message.utf8.count)
-        buffer?.write(string: message)
+        buffer?.writeString(message)
         let _ = self.channel?.writeAndFlush(buffer)
 
     }
