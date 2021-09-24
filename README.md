@@ -1,5 +1,5 @@
 # SwiftyNats
-A swift client for interacting with a [nats](http://nats.io) server.
+A maintained swift client for interacting with a [nats](http://nats.io) server working with NIO2.
 
 ![SwiftyNats Logo](./Resources/Logo@256.png)
 
