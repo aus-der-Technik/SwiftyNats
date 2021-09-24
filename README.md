@@ -95,6 +95,13 @@ Contribution is always welcome. Just send me a pull request.
 
 # Changelog
 
+## 2.1.0
+- uses NIO2 
+- works with Vapor, now!
+ 
+## 2.0.3
+- supports iOS anf tvOS
+
 ## 2.0.2
 - Get information from the connected Server (Version, name, id, ...)
 
