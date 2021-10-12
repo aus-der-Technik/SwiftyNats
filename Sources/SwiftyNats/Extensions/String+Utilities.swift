@@ -103,7 +103,7 @@ extension String {
         var lastLine = ""
         
         for line in lines {
-        
+
             if isMessageFlag {
                 messages.append(lastLine + line)
                 isMessageFlag = false

@@ -2,8 +2,7 @@
 //  NatsClient+ChannelInboundHandler.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 4/4/18.
-//  updated by aus der Technik, 2021
+//  by aus der Technik, 2021
 //
 
 import Foundation
@@ -13,39 +12,58 @@ extension NatsClient: ChannelInboundHandler {
 
     public typealias InboundIn = ByteBuffer
 
-    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+    public func channelActive(context: ChannelHandlerContext) {
+        logger.debug("Channel gets active")
+        inputBuffer = context.channel.allocator.buffer(capacity: 512)
+    }
+    
+    public func channelReadComplete(context: ChannelHandlerContext) {
+        logger.debug("Channel read complete")
 
-        var buffer = self.unwrapInboundIn(data)
-        guard let messages = buffer.readString(length: buffer.readableBytes)?.parseOutMessages() else { return }
+        guard let chunkLength = inputBuffer?.readableBytes else {
+            logger.warning("Input buffer has no data")
+            return
+        }
 
+        guard let inputChunk = inputBuffer?.readString(length: chunkLength) else {
+            logger.warning("Input buffer can not read into string")
+            return
+        }
+        
+        let messages = inputChunk.parseOutMessages()
         for message in messages {
-
             guard let type = message.getMessageType() else { return }
 
             switch type {
             case .ping:
                 self.sendMessage(NatsMessage.pong())
-                continue
             case .ok:
                 self.fire(.response)
-                continue
             case .error:
                 self.fire(.error)
-                continue
             case .message:
                 self.handleIncomingMessage(message)
-                continue
             case .info:
                 self.updateServerInfo(with: message)
-                continue
             default:
                 continue
             }
-
         }
+        inputBuffer?.clear()
+    }
+    
+    public func channelInactive(context: ChannelHandlerContext) {
+        logger.debug("NIO channel gets inactive")
+    }
+    
+    public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        logger.debug("NIO channel read ")
+        var byteBuffer = self.unwrapInboundIn(data)
+        inputBuffer?.writeBuffer(&byteBuffer)
     }
 
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
+        logger.error("Error caught: \(error.localizedDescription)")
         self.disconnect()
         context.close(promise: nil)
         self.fire(.disconnected)

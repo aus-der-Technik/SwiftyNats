@@ -25,7 +25,7 @@ let package = Package(
         .executable(name: "YourApp", targets: ["YourApp"]),
     ],
     dependencies: [
-        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.1.0")
+        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.1.1")
     ],
     targets: [
         .target(
@@ -79,21 +79,27 @@ let client = NatsClient("http://nats.server:4222")
 print("\(client.serverInformation.serverName) has Version: \(client.serverInformation.version))");
 ```
 
-## Why this repository 
-Ray Krow build the most of the  beautiful code in his [original repository](https://github.com/rayepps/swifty-nats). 
-There was not much activity since years, and times changing. I tryed to use the code from 
-Version 1.3.1 but didn't get it working on linux, nor with Nats 2.1.7. So I decided to 
-fork his repository and change a few little thing that it is working again. While spending 
-some time in the code I realized, that I want to have a few things differently: so logging is 
-one of them. 
+## Why does this project exist? 
+Ray Krow created the basis for this project in his [original repository] (https://github.com/rayepps/swifty-nats). 
+There hasn't been much activity for years, and times change, so swift do. I have tried to use his code from 
+version 1.3.1, but it didn't work on Linux, or with Nats 2.1.7, or with NIO2. There was 
+also a bug in his code that did not parse messages on a busy server (dropped messages). 
+So I decided to fork his repository and change a few small things first to get the code working again. 
+While spending some time in the code, I realized I wanted a few things different and found myself 
+myself deeply into maintaining the nats swift community. 
 
-I will maintain this package and optimise it for modern swift and most current NATS Servers. 
+So I commit: I will maintain this package and optimize it for modern swift and most current NATS servers. Please 
+join the [#swift](https://natsio.slack.com/archives/C02D41BU0PQ) channel on nats.io Slack to discuss features and improvements with me. 
+
 
 ## Contribution
 Contribution is always welcome. Just send me a pull request.
 
 
 # Changelog
+
+## 2.1.1
+- rewrite the ChannelHandler: remove a buf that could lead into dropped messages! 
 
 ## 2.1.0
 - uses NIO2 

@@ -142,7 +142,6 @@ extension NatsClient: NatsConnection {
             default:
                 break
             }
-
         }
 
         self.channel = try bootstrap.connect(host: host, port: port).wait()

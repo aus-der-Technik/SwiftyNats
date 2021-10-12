@@ -16,31 +16,30 @@ public enum NatsState {
 }
 
 public enum NatsEvent: String {
-    case connected = "connected"
-    case disconnected = "disconnected"
-    case response = "response"
-    case error = "error"
-    case dropped = "dropped"
-    case reconnecting = "reconnecting"
-    case informed = "informed"
-    static let all = [ connected, disconnected, response, error, dropped, reconnecting ]
+    case connected      = "connected"
+    case disconnected   = "disconnected"
+    case response       = "response"
+    case error          = "error"
+    case dropped        = "dropped"
+    case reconnecting   = "reconnecting"
+    case informed       = "informed"
+    static let all      = [ connected, disconnected, response, error, dropped, reconnecting ]
 }
 
 internal enum NatsOperation: String {
-    case connect = "CONNECT"
-    case subscribe = "SUB"
-    case unsubscribe = "UNSUB"
-    case publish = "PUB"
-    case message = "MSG"
-    case info = "INFO"
-    case ok = "+OK"
-    case error = "-ERR"
-    case ping = "PING"
-    case pong = "PONG"
+    case connect        = "CONNECT"
+    case subscribe      = "SUB"
+    case unsubscribe    = "UNSUB"
+    case publish        = "PUB"
+    case message        = "MSG"
+    case info           = "INFO"
+    case ok             = "+OK"
+    case error          = "-ERR"
+    case ping           = "PING"
+    case pong           = "PONG"
 }
 
 open class NatsClient: NSObject {
-
     var urls = [String]()
     var connectedUrl: URL?
     var config: NatsClientConfig
@@ -55,11 +54,12 @@ open class NatsClient: NSObject {
     internal let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     internal var channel: Channel?
     internal let dispatchGroup = DispatchGroup()
-
+    
+    // Buffer where incoming messages will be stroed
+    internal var inputBuffer: ByteBuffer?
+    
     public init(_ aUrls: [String], _ config: NatsClientConfig) {
-
         for u in aUrls { self.urls.append(u) }
-
         self.config = config
         
         writeQueue.maxConcurrentOperationCount = 1
@@ -70,7 +70,6 @@ open class NatsClient: NSObject {
         let config = config ?? NatsClientConfig()
         self.init([ url ], config)
     }
-    
 }
 
 protocol NatsConnection {
