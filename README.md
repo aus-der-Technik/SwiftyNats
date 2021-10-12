@@ -99,7 +99,7 @@ Contribution is always welcome. Just send me a pull request.
 # Changelog
 
 ## 2.1.1
-- rewrite the ChannelHandler: remove a buf that could lead into dropped messages! 
+- rewrite the ChannelHandler: remove a bug that could lead into dropped messages. 
 
 ## 2.1.0
 - uses NIO2 
