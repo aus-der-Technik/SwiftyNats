@@ -80,7 +80,7 @@ print("\(client.serverInformation.serverName) has Version: \(client.serverInform
 ```
 
 ## Why does this project exist? 
-Ray Krow created the basis for this project in his [original repository] (https://github.com/rayepps/swifty-nats). 
+Ray Krow created the basis for this project in his [original repository](https://github.com/rayepps/swifty-nats). 
 There hasn't been much activity for years, and times change, so swift do. I have tried to use his code from 
 version 1.3.1, but it didn't work on Linux, or with Nats 2.1.7, or with NIO2. There was 
 also a bug in his code that did not parse messages on a busy server (dropped messages). 
