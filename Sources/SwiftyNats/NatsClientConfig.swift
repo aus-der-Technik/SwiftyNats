@@ -7,7 +7,7 @@ import Foundation
 import Logging
 
 var logger = Logger(label: "nats-client")
-public let libVersion = "2.1"
+public let libVersion = "2.2"
 
 public struct NatsClientConfig {
     

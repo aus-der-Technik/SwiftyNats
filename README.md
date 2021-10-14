@@ -28,7 +28,7 @@ let package = Package(
         .executable(name: "YourApp", targets: ["YourApp"]),
     ],
     dependencies: [
-        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.1.1")
+        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.2.0")
     ],
     targets: [
         .target(
@@ -124,6 +124,15 @@ Contribution is always welcome. Just send me a pull request.
 
 
 # Changelog
+
+## 2.2.0
+- The client configuration is now publicly available
+- The handling of the connection status has been rewritten
+- Rewrite of the connection setup
+- The connection termination was rewritten
+- All classes have been cleaned up (refactoring)
+- A new license was added (BSD-0)
+- The reconnection code was removed
 
 ## 2.1.1
 - rewrite the ChannelHandler: remove a bug that could lead into dropped messages. 
