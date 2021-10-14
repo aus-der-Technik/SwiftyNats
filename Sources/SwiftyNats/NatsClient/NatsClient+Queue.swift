@@ -2,9 +2,6 @@
 //  NatsClient+Queue.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 3/2/18.
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 import Dispatch

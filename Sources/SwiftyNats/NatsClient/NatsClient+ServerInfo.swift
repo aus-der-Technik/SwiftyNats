@@ -1,6 +1,6 @@
 //
 //  NatsClient+ServerInfo.swift
-//  by aus der Technik, 02.09.21.
+//  SwiftyNats
 //
 
 import Foundation

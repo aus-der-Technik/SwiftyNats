@@ -2,8 +2,6 @@
 //  NatsServer.swift
 //  SwiftyNats
 //
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 

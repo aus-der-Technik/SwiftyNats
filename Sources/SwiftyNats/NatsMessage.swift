@@ -2,9 +2,6 @@
 //  NatsMessage.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 

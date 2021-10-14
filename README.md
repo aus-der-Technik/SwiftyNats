@@ -5,6 +5,9 @@ A maintained swift client for interacting with a [nats](http://nats.io) server w
 
 Tested with Swift 5.4 on [![macos](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml) and [![Linux](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml)
 
+Swift Version Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
+Platform Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
+
 ## Support
 Join the [#swift](https://natsio.slack.com/archives/C02D41BU0PQ) channel on nats.io Slack. 
 We'll do our best to help quickly. Also feel free to drop by to just say hi. 
@@ -69,6 +72,30 @@ Values are `.debug`, `.info`, `.error` or `.critical`
 let client = NatsClient("http://nats.server:4222")
 client.config.loglevel = .info
 ```
+
+### Reconnection is up to you
+
+Reconnection is not part of this package, because if a server diconnects your application have to be sure that 
+subscribtions are made up again. 
+
+But, with SwiftyNats this is very easy.
+
+```swift
+let client = NatsClient(url)
+client.on(.disconnected) { [self] _ in
+    sleep(5);
+    try? client.reconnect()
+    doSubscribe()
+}
+doSubscribe()
+
+func doSubscribe(){
+    client.subscribe("foo.bar") { message in
+        print("payload: \(message.payload)")
+    }
+}
+```
+
 
 ### Information about the connected server
 

@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  by aus der Technik 02.09.21.
+//  ServerInformation.swift
+//  SwiftyNatsTest
 //
-
 import Foundation
 
 

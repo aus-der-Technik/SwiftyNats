@@ -2,8 +2,6 @@
 //  String+Utilities.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//
 
 import Foundation
 
@@ -22,12 +20,6 @@ extension String {
         let start = index(startIndex, offsetBy: bounds.lowerBound)
         let end = index(startIndex, offsetBy: bounds.upperBound)
         return String(self[start...end])
-    }
-    
-    subscript (bounds: CountableRange<Int>) -> String {
-        let start = index(startIndex, offsetBy: bounds.lowerBound)
-        let end = index(startIndex, offsetBy: bounds.upperBound)
-        return String(self[start..<end])
     }
     
     func removeNewlines() -> String {

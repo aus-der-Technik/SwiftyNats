@@ -2,9 +2,6 @@
 //  NatsClient+Connection.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 import NIO
@@ -13,65 +10,63 @@ import Dispatch
 extension NatsClient: NatsConnection {
 
     // MARK: - Implement NatsConnection Protocol
-
+    
+    /// Connect to the NATS server
     open func connect() throws {
-        logger.debug("try to connect")
-        guard self.state != .connected else { return }
-
+        logger.debug("Try to connect.")
+        guard self.state != .connected else {
+            logger.info("Already connected, skip connection.")
+            return
+        }
+        
         self.dispatchGroup.enter()
-
-        var thread: Thread?
-
+        
         #if os(Linux)
         thread = Thread { self.setupConnection() }
         #else
         thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
         #endif
-
         thread?.start()
-
         self.dispatchGroup.wait()
 
         if let error = self.connectionError {
+            logger.error("Error while connectig.")
             throw error
         }
 
         if self.server?.authRequired == true {
+            logger.warning("Authorisation is required.")
             try self.authenticateWithServer()
         }
-
-        self.state = .connected
-        self.fire(.connected)
-
     }
 
+    /// Disconnect from the NATS server
     open func disconnect() {
-        logger.debug("will disconnect")
-        try? self.channel?.close().wait()
-        try? self.group.syncShutdownGracefully()
-        self.state = .disconnected
+        logger.debug("Try to disconnect.")
+        do {
+            try self.channel?.close().wait()
+        } catch {
+            logger.error("\(error.localizedDescription)")
+        }
+        do {
+            try self.group?.syncShutdownGracefully()
+        } catch {
+            logger.error("\(error.localizedDescription)")
+        }
         self.server = nil
-        self.fire(.disconnected)
     }
 
     // MARK: - Internal Methods
 
-    internal func retryConnection() {
+    open func reconnect() throws {
         self.fire(.reconnecting)
-        var retryCount = 0
-
-        if self.config.autoRetry {
-            while retryCount < self.config.autoRetryMax {
-                logger.debug("retry \(retryCount + 1)/\(self.config.autoRetryMax) to connect")
-                if let _ = try? self.connect() {
-                    return
-                }
-                retryCount += 1
-                usleep(UInt32(self.config.connectionRetryDelay))
-            }
+        
+        // disconnect - if not already
+        if state == .connected {
+            self.disconnect()
         }
-
-        self.disconnect()
+        thread?.cancel()
+        try self.connect()
     }
 
     // MARK: - Private Methods
@@ -112,8 +107,10 @@ extension NatsClient: NatsConnection {
     }
     #endif
     
+    /// open the client connection to the streaming serer
     fileprivate func openStream(to url: String) throws {
-
+        group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        
         guard let server = URL(string: url) else {
             throw NatsConnectionError("Invalid url provided: (\(url))")
         }
@@ -122,13 +119,7 @@ extension NatsClient: NatsConnection {
             throw NatsConnectionError("Invalid url provided: (\(server.absoluteString))")
         }
 
-        let bootstrap = ClientBootstrap(group: self.group)
-            .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
-            .channelInitializer { channel in
-                channel.pipeline.addHandler(self)
-            }
-            
-
+        // listener
         var isInformed = false
         var hasErrored = false
         self.on([.informed, .error], autoOff: true) { e in
@@ -143,37 +134,51 @@ extension NatsClient: NatsConnection {
                 break
             }
         }
+        
+        let bootstrap = ClientBootstrap(group: self.group!)
+            .channelOption(ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR), value: 1)
+            .channelInitializer { channel in
+                channel.pipeline.addHandler(self)
+            }.connectTimeout( TimeAmount.seconds(5) )
 
-        self.channel = try bootstrap.connect(host: host, port: port).wait()
-
-        let timeout = 3 // seconds
-
-        for _ in 0...timeout {
-            if isInformed {
-                break
+        let futureConnection = bootstrap.connect(host: host, port: port)
+        futureConnection.whenFailure({ err in
+            logger.error("\(err.localizedDescription)")
+        })
+        futureConnection.whenSuccess({channel in
+            if hasErrored {
+                //throw NatsConnectionError("Server returned an error while trying to connect")
+                logger.error("Server returned an error while trying to connect")
+            } else {
+                self.channel = channel
             }
+        })
+        _ = try futureConnection.wait()
+        
+        // after the connection is done, we need to wait for the server answer
+        let timeout: TimeInterval = 5
+        let waiterStartTime = Date()
+        while isInformed != true {
             if hasErrored {
                 throw NatsConnectionError("Server returned an error while trying to connect")
             }
-            sleep(1) // second
+            sleep(1)
+            let waitingInterval = Date().timeIntervalSince(waiterStartTime)
+            if waitingInterval >= timeout {
+                logger.error("Timeout waitung for information.")
+                throw NatsConnectionError("Server timedout. Waited \(timeout) seconds for info response but never got it")
+            }
         }
-
-        if !isInformed {
-            throw NatsConnectionError("Server timedout. Waited \(timeout) seconds for info response but never got it")
-        }
-
     }
 
     fileprivate func authenticateWithServer() throws {
-
         guard let user = self.connectedUrl?.user, let password = self.connectedUrl?.password else {
             throw NatsConnectionError("Server authentication requires url with basic authentication")
         }
-
         let config = [
             "verbose": self.config.verbose,
             "pedantic": self.config.pedantic,
-            "ssl_required": server!.sslRequired,
+            "ssl_required": server!.sslRequired ?? false,
             "name": self.config.name,
             "lang": self.config.lang,
             "version": self.config.version,
@@ -182,7 +187,6 @@ extension NatsClient: NatsConnection {
             ] as [String : Any]
 
         self.sendMessage(NatsMessage.connect(config: config))
-
     }
 
 }

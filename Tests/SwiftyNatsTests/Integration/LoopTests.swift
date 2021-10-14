@@ -39,7 +39,7 @@ class LoopTests: XCTestCase {
             clientPublish.publish("S....................\(i)....................E", to: "swift.test")
         }
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        waitForExpectations(timeout: 3.0, handler: nil)
         
         clientPublish.disconnect()
         clientSubscribe.disconnect()

@@ -2,15 +2,12 @@
 //  Streams+Read+Write.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//
 
 import Foundation
 
 extension InputStream {
 
     func readStream() -> Data? {
-
         let max_buffer = 4096
         var dataQueue = [Data]()
         var length = max_buffer
@@ -26,13 +23,11 @@ extension InputStream {
         }
 
         guard !dataQueue.isEmpty else { return nil }
-
         let data = dataQueue.reduce(Data(), {
             var combined = Data(referencing: NSData(data: $0))
             combined.append($1)
             return combined
         })
-
         return data
     }
 
@@ -43,10 +38,8 @@ extension InputStream {
             }
             if (self.streamError != nil) { break }
         }
-
         return nil
     }
-
 }
 
 extension OutputStream {
