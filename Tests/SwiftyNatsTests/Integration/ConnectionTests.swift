@@ -29,7 +29,6 @@ class ConnectionTests: XCTestCase {
         let client = NatsClient(TestSettings.natsUrl)
 
         try? client.connect()
-        //dump(client)
         guard let _ = client.server else { XCTFail("Client did not connect to server correctly"); return }
 
     }

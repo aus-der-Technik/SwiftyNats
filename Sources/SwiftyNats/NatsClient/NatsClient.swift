@@ -49,6 +49,9 @@ open class NatsClient: NSObject {
     internal var eventHandlerStore: [ NatsEvent: [ NatsEventHandler ] ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var messageQueue = OperationQueue()
+    public var connectionState: NatsState {
+        get { return state }
+    }
     internal var state: NatsState = .disconnected {
         didSet {
             // fire event when state is changed only
