@@ -25,7 +25,6 @@ class ServerInformationTest: XCTestCase {
     func testServerInformationPropertiesSet() {
         let client = NatsClient(TestSettings.natsUrl)
         try? client.connect()
-        dump(client.serverInformation)
         XCTAssertEqual(client.serverInformation?.host, "0.0.0.0")
         XCTAssertEqual(client.serverInformation?.port, 4222)
         

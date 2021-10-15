@@ -35,7 +35,7 @@ class LoopTests: XCTestCase {
             runCountExpectation.fulfill()
         }
         
-        for i in 1...100 {
+        for i in 1...10 {
             clientPublish.publish("S....................\(i)....................E", to: "swift.test")
         }
         
