@@ -133,6 +133,7 @@ Contribution is always welcome. Just send me a pull request.
 - All classes have been cleaned up (refactoring)
 - A new license was added (BSD-0)
 - The reconnection code was removed
+- Subscription queue is an optional property of NatsSubject
 
 ## 2.1.1
 - rewrite the ChannelHandler: remove a bug that could lead into dropped messages. 
