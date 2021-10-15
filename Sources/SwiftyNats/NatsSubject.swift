@@ -7,10 +7,11 @@ import Foundation
 
 public struct NatsSubject {
     
-    let subject: String
     let id: String
-    let queue: String?
+    public let subject: String
+    public let queue: String?
     
+    // @depricated as replacement of subject, use subject instead.
     public var description: String {
         get {
             return subject
