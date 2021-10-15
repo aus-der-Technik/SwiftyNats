@@ -9,6 +9,7 @@ public struct NatsSubject {
     
     let subject: String
     let id: String
+    let queue: String?
     
     public var description: String {
         get {
@@ -16,17 +17,16 @@ public struct NatsSubject {
         }
     }
     
-    init(subject: String, id: String) {
+    init(subject: String, id: String, queue: String? = nil) {
         self.subject = subject
         self.id = id
+        self.queue = queue
     }
     
-    init(subject: String) {
+    init(subject: String, queue: String? = nil) {
         let id = String.hash()
-        self.init(subject: subject, id: id)
+        self.init(subject: subject, id: id, queue: queue)
     }
-    
-    
 }
 
 extension NatsSubject: Hashable {
