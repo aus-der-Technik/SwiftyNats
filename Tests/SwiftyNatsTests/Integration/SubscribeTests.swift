@@ -2,8 +2,6 @@
 //  SubscribeTests.swift
 //  SwiftyNatsTests
 //
-//  Created by Ray Krow on 4/4/18.
-//
 
 import XCTest
 @testable import SwiftyNats
@@ -31,7 +29,7 @@ class SubscribeTests: XCTestCase {
     }
     
     func testClientSubscriptionSync() {
-        
+
         let client = NatsClient(TestSettings.natsUrl)
         
         try? client.connect()

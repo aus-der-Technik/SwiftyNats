@@ -17,7 +17,8 @@ class LoopTests: XCTestCase {
         try? clientSubscribe.connect()
         
         let runCountExpectation = expectation(description: "Callback Subscribe")
-        runCountExpectation.expectedFulfillmentCount = 100
+        let runLoops = 10
+        runCountExpectation.expectedFulfillmentCount = runLoops
         clientSubscribe.subscribe(to: "swift.test") { message in
             guard let byteCount = message.byteCount else {
                 XCTFail("No message.byteCount")
@@ -35,11 +36,11 @@ class LoopTests: XCTestCase {
             runCountExpectation.fulfill()
         }
         
-        for i in 1...100 {
+        for i in 1...runLoops {
             clientPublish.publish("S....................\(i)....................E", to: "swift.test")
         }
         
-        waitForExpectations(timeout: 1.0, handler: nil)
+        waitForExpectations(timeout: 5.0, handler: nil)
         
         clientPublish.disconnect()
         clientSubscribe.disconnect()

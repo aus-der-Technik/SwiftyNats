@@ -2,8 +2,6 @@
 //  StringExtensionTests.swift
 //  SwiftyNatsTests
 //
-//  Created by Ray Krow on 2/27/18.
-//
 
 import XCTest
 @testable import SwiftyNats

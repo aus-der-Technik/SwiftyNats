@@ -2,8 +2,6 @@
 //  TestSettings.swift
 //  SwiftyNatsTest
 //
-//  Created by Ray Krow on 4/5/18.
-//
 
 
 struct TestSettings {

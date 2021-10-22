@@ -2,8 +2,6 @@
 //  NatsResponse.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 3/8/18.
-//
 
 internal enum NatsResponseType {
     case success

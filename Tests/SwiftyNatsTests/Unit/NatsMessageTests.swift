@@ -2,8 +2,6 @@
 //  NatsMessageTests.swift
 //  SwiftyNatsTests
 //
-//  Created by Ray Krow on 4/4/18.
-//
 
 import XCTest
 @testable import SwiftyNats

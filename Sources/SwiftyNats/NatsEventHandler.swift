@@ -2,9 +2,6 @@
 //  NatsEventHandler.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 3/11/18.
-//
-
 
 internal struct NatsEventHandler {
     let listenerId: String

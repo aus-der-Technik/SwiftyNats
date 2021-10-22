@@ -2,9 +2,6 @@
 //  EventBusTests.swift
 //  SwiftyNatsTest
 //
-//  Created by Ray Krow on 4/5/18.
-//
-
 
 import XCTest
 @testable import SwiftyNats

@@ -2,19 +2,18 @@
 //  NatsClient.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 import NIO
 import Dispatch
 
+/// Client connection states
 public enum NatsState {
     case connected
     case disconnected
 }
 
+/// Nats events
 public enum NatsEvent: String {
     case connected      = "connected"
     case disconnected   = "disconnected"
@@ -39,19 +38,36 @@ internal enum NatsOperation: String {
     case pong           = "PONG"
 }
 
+/// a Nats client
 open class NatsClient: NSObject {
     var urls = [String]()
     var connectedUrl: URL?
-    var config: NatsClientConfig
+    public var config: NatsClientConfig
 
     internal var server: NatsServer?
     internal var writeQueue = OperationQueue()
     internal var eventHandlerStore: [ NatsEvent: [ NatsEventHandler ] ] = [:]
     internal var subjectHandlerStore: [ NatsSubject: (NatsMessage) -> Void] = [:]
     internal var messageQueue = OperationQueue()
-    internal var state: NatsState = .disconnected
+    public var connectionState: NatsState {
+        get { return state }
+    }
+    internal var state: NatsState = .disconnected {
+        didSet {
+            // fire event when state is changed only
+            if oldValue != state {
+            switch state {
+                case .connected:
+                    self.fire(.connected)
+                case .disconnected:
+                    self.fire(.disconnected)
+            }
+            }
+        }
+    }
     internal var connectionError: NatsError?
-    internal let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+    internal var group: MultiThreadedEventLoopGroup?
+    internal var thread: Thread?
     internal var channel: Channel?
     internal let dispatchGroup = DispatchGroup()
     
@@ -71,6 +87,8 @@ open class NatsClient: NSObject {
         self.init([ url ], config)
     }
 }
+
+// MARK: - Protocols
 
 protocol NatsConnection {
     func connect() throws

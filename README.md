@@ -1,20 +1,23 @@
 # SwiftyNats
-A maintained swift client for interacting with a [nats](http://nats.io) server working with NIO2.
+A maintained swift client for interacting with a [nats](http://nats.io) server based on NIO2.
 
 ![SwiftyNats Logo](./Resources/Logo@256.png)
 
 Tested with Swift 5.4 on [![macos](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml) and [![Linux](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml)
 
+Swift Version Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
+
+Platform Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
+
 ## Support
 Join the [#swift](https://natsio.slack.com/archives/C02D41BU0PQ) channel on nats.io Slack. 
-We'll do our best to help quickly. Also feel free to drop by to just say hi. 
+We'll do our best to help quickly. You can also just drop by and say hello. We're looking forward to developing the community. 
 
-## Installation
-Use SPM to install this packages as a dependency in your projects `Package.swift` file .
-Add the dependencies like below.
+## Installation via Swift Package Manager
+### In Package.swift
+Add this packages as a dependency in your projects `Package.swift` file and add the Name to your target like shown in this example:
 
 ```swift
-
 // swift-tools-version:5.4
 
 import PackageDescription
@@ -25,7 +28,7 @@ let package = Package(
         .executable(name: "YourApp", targets: ["YourApp"]),
     ],
     dependencies: [
-        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.1.1")
+        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.2.0")
     ],
     targets: [
         .target(
@@ -36,32 +39,41 @@ let package = Package(
 )
 
 ```
+### In an .xcodeproj
+Open the project inspector in XCode and select your project. It is importent to select the **project** and not a target! 
+Klick on the third tab `Package Dependencies` and add the git url `https://github.com/aus-der-technik/swifty-nats.git` by selecting the litte `+`-sign at the end of the package list.  
+
 
 ## Basic Usage
 ```swift
 
 import SwiftyNats
 
+// register a new client
 let client = NatsClient("http://nats.server:4222")
 
+// listen to an event
 client.on(.connect) { _ in
     print("Client connected")
 }
 
+// try to connect to the server 
 try? client.connect()
 
+// subscribe to a channel with a inline message handler. 
 client.subscribe("foo.bar") { message in
     print("payload: \(message.payload)")
     print("size: \(message.byteCount)")
     print("reply subject: \(message.replySubject.subject)")
 }
 
+// publish an event onto the message strem into a subject
 client.publish("this event happened", to: "foo.bar")
 
 ```
 
-### Setting the loglevel
 
+### Setting the loglevel
 The default loglevel is `.error`. You can reset it to see more verbose messages. Possible
 Values are `.debug`, `.info`, `.error` or `.critical`
 
@@ -69,6 +81,49 @@ Values are `.debug`, `.info`, `.error` or `.critical`
 let client = NatsClient("http://nats.server:4222")
 client.config.loglevel = .info
 ```
+
+### Reconnection is up to you
+Reconnection is not part of this package, because if a server diconnects your application have to be sure that 
+subscribtions are made up again correctly. 
+
+With SwiftyNats this is a very easy step:
+
+```swift
+
+// register a new client
+let client = NatsClient(url)
+
+// listen to the .disconnected event to try a reconnect 
+client.on(.disconnected) { [self] _ in
+    sleep(5);
+    try? client.reconnect()
+    doSubscribe()
+}
+
+// subscribe to the channels
+doSubscribe()
+
+// private function to subscribe to channels
+private func doSubscribe(){
+    client.subscribe("foo.bar") { message in
+        print("payload: \(message.payload)")
+    }
+}
+```
+
+### List of events
+The public class `NatsEvent` contains all events you can subscribt to.
+
+| event        | description                                                            |
+| ------------ | ---------------------------------------------------------------------- |
+| connected    | The client is conected to the server.                                  | 
+| disconnected | The client disconnects and was connectd before.                        | 
+| response     | The client gets an response from the server (internal).                |
+| error        | The server sends an error that can't be handled.                       |
+| dropped      | The clients droped a message. Mostly because of queue length to short. | 
+| reconnecting | The client reconencts to the server, (Because of a called reconnect()).|
+| informed     | The server sends his information data successfully to the client.      |
+
 
 ### Information about the connected server
 
@@ -79,24 +134,22 @@ let client = NatsClient("http://nats.server:4222")
 print("\(client.serverInformation.serverName) has Version: \(client.serverInformation.version))");
 ```
 
-## Why does this project exist? 
-Ray Krow created the basis for this project in his [original repository](https://github.com/rayepps/swifty-nats). 
-There hasn't been much activity for years, and times change, so swift do. I have tried to use his code from 
-version 1.3.1, but it didn't work on Linux, or with Nats 2.1.7, or with NIO2. There was 
-also a bug in his code that did not parse messages on a busy server (dropped messages). 
-So I decided to fork his repository and change a few small things first to get the code working again. 
-While spending some time in the code, I realized I wanted a few things different and found myself 
-myself deeply into maintaining the nats swift community. 
-
-So I commit: I will maintain this package and optimize it for modern swift and most current NATS servers. Please 
-join the [#swift](https://natsio.slack.com/archives/C02D41BU0PQ) channel on nats.io Slack to discuss features and improvements with me. 
-
 
 ## Contribution
 Contribution is always welcome. Just send me a pull request.
 
 
 # Changelog
+
+## 2.2.0
+- The client configuration is now publicly available
+- The handling of the connection status has been rewritten
+- Rewrite of the connection setup
+- The connection termination was rewritten
+- All classes have been cleaned up (refactoring)
+- A new license was added (BSD-0)
+- The reconnection code was removed
+- Subscription queue is an optional property of NatsSubject
 
 ## 2.1.1
 - rewrite the ChannelHandler: remove a bug that could lead into dropped messages. 

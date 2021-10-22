@@ -2,39 +2,33 @@
 //  NatsClientConfig.swift
 //  SwiftyNats
 //
-//  Created by Ray Krow on 2/27/18.
-//  updated by aus der Technik, 2021
-//
 
 import Foundation
 import Logging
 
-var logger = Logger(label: "nats-client")
-var libVersion = "2.0"
+var logger = Logger(label: "SwiftyNats")
+public let libVersion = "2.2"
 
 public struct NatsClientConfig {
     
     // logging
-    var loglevel: Logger.Level = .error {
+    public var loglevel: Logger.Level = .error {
         didSet {
             logger.logLevel = loglevel
         }
     }
     
     // Required for nats server
-    let verbose: Bool
-    let pedantic: Bool
-    let name: String
+    public let verbose: Bool
+    public let pedantic: Bool
+    public let name: String
     let lang: String = "Swift"
-    let version: String = "2.0.0"
+    let version: String = libVersion
     
     // Internal config vars
-    var autoRetry: Bool = false
-    var autoRetryMax: Int = 3
-    var internalQueueMax: Int = 100
-    var connectionRetryDelay: TimeInterval = 5
+    public var internalQueueMax: Int = 100
     
-    init(
+    public init(
         verbose: Bool = false,
         pedantic: Bool = false,
         name: String = "SwiftyNats \(libVersion)",

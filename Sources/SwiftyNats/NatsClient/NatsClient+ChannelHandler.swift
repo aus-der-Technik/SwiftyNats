@@ -2,8 +2,6 @@
 //  NatsClient+ChannelInboundHandler.swift
 //  SwiftyNats
 //
-//  by aus der Technik, 2021
-//
 
 import Foundation
 import NIO
@@ -14,6 +12,8 @@ extension NatsClient: ChannelInboundHandler {
 
     public func channelActive(context: ChannelHandlerContext) {
         logger.debug("Channel gets active")
+        
+        self.state = .connected
         inputBuffer = context.channel.allocator.buffer(capacity: 512)
     }
     
@@ -53,20 +53,25 @@ extension NatsClient: ChannelInboundHandler {
     }
     
     public func channelInactive(context: ChannelHandlerContext) {
-        logger.debug("NIO channel gets inactive")
+        logger.debug("Channel gets inactive")
+        context.close(promise: nil)
+
+        self.state = .disconnected
     }
     
     public func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        logger.debug("NIO channel read ")
+        logger.debug("Channel read")
         var byteBuffer = self.unwrapInboundIn(data)
         inputBuffer?.writeBuffer(&byteBuffer)
     }
 
     public func errorCaught(context: ChannelHandlerContext, error: Error) {
         logger.error("Error caught: \(error.localizedDescription)")
-        self.disconnect()
+
         context.close(promise: nil)
-        self.fire(.disconnected)
+        self.disconnect()
+        
+        self.state = .disconnected
     }
 }
 

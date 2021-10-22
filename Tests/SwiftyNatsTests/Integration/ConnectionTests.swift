@@ -2,10 +2,9 @@
 //  NatsClientTests.swift
 //  SwiftyNatsTests
 //
-//  Created by Ray Krow on 2/27/18.
-//
 
 import XCTest
+import NIO
 @testable import SwiftyNats
 
 class ConnectionTests: XCTestCase {
@@ -51,5 +50,43 @@ class ConnectionTests: XCTestCase {
         XCTAssertTrue(client.state == .connected, "Client did not connect")
 
     }
+    
+    func testClientConnectDisconnect() {
+        let client = NatsClient(TestSettings.natsUrl)
+        client.config.loglevel = .trace
 
+        try? client.connect()
+        XCTAssertTrue(client.state == .connected, "Client did not connect")
+        XCTAssertNotNil(client.server)
+        XCTAssertTrue(client.channel!.isActive)
+        
+        client.disconnect()
+        XCTAssertTrue(client.state == .disconnected, "Client should be disconnect")
+        XCTAssertNil(client.server)
+        XCTAssertFalse(client.channel!.isActive)
+        
+        try? client.connect()
+        XCTAssertTrue(client.state == .connected, "Client did not connect")
+        XCTAssertNotNil(client.server)
+        XCTAssertTrue(client.channel!.isActive)
+
+        client.disconnect()
+        XCTAssertTrue(client.state == .disconnected, "Client should be disconnect")
+        XCTAssertNil(client.server)
+        XCTAssertFalse(client.channel!.isActive)
+    }
+
+    func testClientReconnectWhenAlreadyConnected() {
+        let client = NatsClient(TestSettings.natsUrl)
+        client.config.loglevel = .trace
+        
+        try? client.connect()
+        XCTAssertTrue(client.state == .connected, "Client did not connect")
+        XCTAssertNotNil(client.server)
+        XCTAssertTrue(client.channel!.isActive)
+        
+        try? client.reconnect()
+        XCTAssertNotNil(client.server)
+        XCTAssertTrue(client.channel!.isActive)
+    }
 }
