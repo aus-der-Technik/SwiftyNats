@@ -29,7 +29,7 @@ class SubscribeTests: XCTestCase {
     }
     
     func testClientSubscriptionSync() {
-        
+
         let client = NatsClient(TestSettings.natsUrl)
         
         try? client.connect()

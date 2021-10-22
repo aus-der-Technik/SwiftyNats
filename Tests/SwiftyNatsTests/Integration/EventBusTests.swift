@@ -3,7 +3,6 @@
 //  SwiftyNatsTest
 //
 
-
 import XCTest
 @testable import SwiftyNats
 

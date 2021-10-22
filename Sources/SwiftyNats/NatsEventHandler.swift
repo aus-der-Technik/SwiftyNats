@@ -3,7 +3,6 @@
 //  SwiftyNats
 //
 
-
 internal struct NatsEventHandler {
     let listenerId: String
     let handler: (NatsEvent) -> Void

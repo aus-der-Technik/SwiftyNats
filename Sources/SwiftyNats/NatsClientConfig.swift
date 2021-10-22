@@ -6,7 +6,7 @@
 import Foundation
 import Logging
 
-var logger = Logger(label: "nats-client")
+var logger = Logger(label: "SwiftyNats")
 public let libVersion = "2.2"
 
 public struct NatsClientConfig {
