@@ -6,6 +6,7 @@ A maintained swift client for interacting with a [nats](http://nats.io) server b
 Tested with Swift 5.4 on [![macos](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/macos.yml) and [![Linux](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/aus-der-Technik/swifty-nats/actions/workflows/linux.yml)
 
 Swift Version Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
+
 Platform Compatibility: [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Faus-der-Technik%2Fswifty-nats%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/aus-der-Technik/swifty-nats)
 
 ## Support
@@ -109,6 +110,19 @@ private func doSubscribe(){
     }
 }
 ```
+
+### List of events
+The public class `NatsEvent` contains all events you can subscribt to.
+
+| event        | description                                                            |
+| ------------ | ---------------------------------------------------------------------- |
+| connected    | The client is conected to the server.                                  | 
+| disconnected | The client disconnects and was connectd before.                        | 
+| response     | The client gets an response from the server (internal).                |
+| error        | The server sends an error that can't be handled.                       |
+| dropped      | The clients droped a message. Mostly because of queue length to short. | 
+| reconnecting | The client reconencts to the server, (Because of a called reconnect()).|
+| informed     | The server sends his information data successfully to the client.      |
 
 
 ### Information about the connected server
