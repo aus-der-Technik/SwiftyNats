@@ -28,7 +28,7 @@ let package = Package(
         .executable(name: "YourApp", targets: ["YourApp"]),
     ],
     dependencies: [
-        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/swifty-nats.git", from: "2.2.0")
+        .package(name: "SwiftyNats", url: "https://github.com/aus-der-technik/SwiftyNats.git", from: "2.2.0")
     ],
     targets: [
         .target(
@@ -41,7 +41,7 @@ let package = Package(
 ```
 ### In an .xcodeproj
 Open the project inspector in XCode and select your project. It is importent to select the **project** and not a target! 
-Klick on the third tab `Package Dependencies` and add the git url `https://github.com/aus-der-technik/swifty-nats.git` by selecting the litte `+`-sign at the end of the package list.  
+Klick on the third tab `Package Dependencies` and add the git url `https://github.com/aus-der-technik/SwiftyNats.git` by selecting the litte `+`-sign at the end of the package list.  
 
 
 ## Basic Usage
