@@ -20,6 +20,9 @@ class LoopTests: XCTestCase {
         let runLoops = 10
         runCountExpectation.expectedFulfillmentCount = runLoops
         clientSubscribe.subscribe(to: "swift.test") { message in
+            print("-> \(message.payload!)")
+            runCountExpectation.fulfill()
+            
             guard let byteCount = message.byteCount else {
                 XCTFail("No message.byteCount")
                 return
@@ -33,7 +36,7 @@ class LoopTests: XCTestCase {
                 print("payload [\(payload.count)] \(payload)")
                 XCTFail("ERROR DETECTED")
             }
-            runCountExpectation.fulfill()
+            
         }
         
         for i in 1...runLoops {
