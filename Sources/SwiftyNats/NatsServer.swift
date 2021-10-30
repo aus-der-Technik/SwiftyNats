@@ -5,7 +5,7 @@
 
 import Foundation
 
-public struct NatsServer {
+public struct NatsServer: Codable {
     
     /// The host  the connected NATS server is listening on
     public let host: String
