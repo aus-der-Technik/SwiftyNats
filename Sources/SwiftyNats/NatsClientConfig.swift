@@ -26,7 +26,7 @@ public struct NatsClientConfig {
     let version: String = libVersion
     
     // Internal config vars
-    public var internalQueueMax: Int = 100
+    public var internalQueueMax: Int = Int.max
     
     public init(
         verbose: Bool = false,

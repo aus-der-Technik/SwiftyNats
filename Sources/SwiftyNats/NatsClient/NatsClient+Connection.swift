@@ -141,6 +141,7 @@ extension NatsClient: NatsConnection {
                 channel.pipeline.addHandler(self)
             }.connectTimeout( TimeAmount.seconds(5) )
 
+        
         let futureConnection = bootstrap.connect(host: host, port: port)
         futureConnection.whenFailure({ err in
             logger.error("\(err.localizedDescription)")
