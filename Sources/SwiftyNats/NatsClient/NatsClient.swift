@@ -91,7 +91,7 @@ open class NatsClient: NSObject {
 // MARK: - Protocols
 
 protocol NatsConnection {
-    func connect() throws
+    func connect(_ timeout: CGFloat) throws
     func disconnect()
 }
 

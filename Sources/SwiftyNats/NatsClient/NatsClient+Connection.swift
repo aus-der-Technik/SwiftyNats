@@ -12,37 +12,38 @@ extension NatsClient: NatsConnection {
     // MARK: - Implement NatsConnection Protocol
     
     /// Connect to the NATS server
-    open func connect() throws {
-            logger.debug("Try to connect.")
-            guard self.state != .connected else {
-                logger.info("Already connected, skip connection.")
-                return
-            }
-            
-            self.dispatchGroup.enter()
-            
-            #if os(Linux)
-            thread = Thread { self.setupConnection() }
-            #else
-            thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
-            #endif
-            thread?.start()
-            
-            while self.connectionError == nil && self.state != .connected {
-                // Attendre la fin de l'exécution du thread
-            }
-            
-            if let error = self.connectionError {
-                logger.error("Error while connectig.")
-                throw error
-            }
-
-            if self.server?.authRequired == true {
-                logger.warning("Authorisation is required.")
-                try self.authenticateWithServer()
-            }
+    public func connect(_ timeout: CGFloat = 10.0) throws {
+        logger.debug("Try to connect.")
+        guard self.state != .connected else {
+            logger.info("Already connected, skip connection.")
+            return
         }
 
+        self.dispatchGroup.enter()
+
+        #if os(Linux)
+        thread = Thread { self.setupConnection() }
+        #else
+        thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
+        #endif
+        thread?.start()
+
+        // Wait a maximum of 10 (timeout) seconds before ending connexion process
+        let startDate = Date()
+        repeat {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        } while self.connectionError == nil && self.state != .connected && Date().timeIntervalSince(startDate) < timeout
+
+        if let error = self.connectionError {
+            logger.error("Error while connectig.")
+            throw error
+        }
+
+        if self.server?.authRequired == true {
+            logger.warning("Authorisation is required.")
+            try self.authenticateWithServer()
+        }
+    }
 
     /// Disconnect from the NATS server
     open func disconnect() {
