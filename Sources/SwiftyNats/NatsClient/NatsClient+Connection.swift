@@ -12,23 +12,33 @@ extension NatsClient: NatsConnection {
     // MARK: - Implement NatsConnection Protocol
     
     /// Connect to the NATS server
-    open func connect() throws {
+    public func connect(_ timeout: CGFloat = 10.0) throws {
         logger.debug("Try to connect.")
         guard self.state != .connected else {
             logger.info("Already connected, skip connection.")
             return
         }
-        
+
         self.dispatchGroup.enter()
-        
+
         #if os(Linux)
         thread = Thread { self.setupConnection() }
         #else
         thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
         #endif
         thread?.start()
-        self.dispatchGroup.wait()
 
+        // Wait a maximum of 10 (timeout) seconds before ending connexion process
+        let startDate = Date()
+        repeat {
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+        } while self.connectionError == nil && self.state != .connected && Date().timeIntervalSince(startDate) < timeout
+
+        if Date().timeIntervalSince(startDate) >= timeout {
+            logger.error("Timeout while connecting.")
+            throw NatsConnectionError("Timeout while connecting.")
+        }
+        
         if let error = self.connectionError {
             logger.error("Error while connectig.")
             throw error
