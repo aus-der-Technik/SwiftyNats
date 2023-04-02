@@ -8,34 +8,34 @@ extension NatsClient: NatsEventBus {
     // MARK: - Implement NatsEvents Protocol
     
     @discardableResult
-    open func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) -> String {
+    public func on(_ events: [NatsEvent], _ handler: @escaping (NatsEvent) -> Void) -> String {
         
         return self.addListeners(for: events, using: handler)
 
     }
     
     @discardableResult
-    open func on(_ event: NatsEvent, _ handler: @escaping (NatsEvent) -> Void) -> String {
+    public func on(_ event: NatsEvent, _ handler: @escaping (NatsEvent) -> Void) -> String {
         
         return self.addListeners(for: [event], using: handler)
         
     }
     
     @discardableResult
-    open func on(_ event: NatsEvent, autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
+    public func on(_ event: NatsEvent, autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
         
         return self.addListeners(for: [event], using: handler, autoOff)
         
     }
     
     @discardableResult
-    open func on(_ events: [NatsEvent], autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
+    public func on(_ events: [NatsEvent], autoOff: Bool, _ handler: @escaping (NatsEvent) -> Void) -> String {
         
         return self.addListeners(for: events, using: handler, autoOff)
         
     }
     
-    open func off(_ id: String) {
+    public func off(_ id: String) {
         
         self.removeListener(id)
         

@@ -16,7 +16,7 @@ extension NatsClient: NatsQueue {
         return 500 // milliseconds
     }
 
-    open func flushQueue(maxWait: TimeInterval? = nil) throws {
+    public func flushQueue(maxWait: TimeInterval? = nil) throws {
         
         let startTimestamp = Date().timeIntervalSinceReferenceDate
 
