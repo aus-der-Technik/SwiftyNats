@@ -11,7 +11,7 @@ extension NatsClient: NatsSubscribe {
     // MARK: - Implement NatsSubscribe Protocol
 
     @discardableResult
-    open func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
+    public func subscribe(to subject: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         logger.info("subscribe to subject \(subject)")
         let nsub = NatsSubject(subject: subject)
 
@@ -23,7 +23,7 @@ extension NatsClient: NatsSubscribe {
     }
 
     @discardableResult
-    open func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
+    public func subscribe(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) -> NatsSubject {
         logger.info("subscribe to subject \(subject)")
         let nsub = NatsSubject(subject: subject)
 
@@ -35,14 +35,14 @@ extension NatsClient: NatsSubscribe {
 
     }
 
-    open func unsubscribe(from subject: NatsSubject) {
+    public func unsubscribe(from subject: NatsSubject) {
         logger.info("unsubscribe from subject \(subject)")
         self.sendMessage(NatsMessage.unsubscribe(sid: subject.id))
         self.subjectHandlerStore[subject] = nil
 
     }
 
-    open func unsubscribeSync(from subject: NatsSubject) throws {
+    public func unsubscribeSync(from subject: NatsSubject) throws {
         logger.info("unsubscribe syncrnon from subject \(subject)")
         let group = DispatchGroup()
         group.enter()
@@ -67,12 +67,12 @@ extension NatsClient: NatsSubscribe {
     }
 
     @discardableResult
-    open func subscribeSync(to subject: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
+    public func subscribeSync(to subject: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
         return try subSync(to: subject, asPartOf: "", handler)
     }
 
     @discardableResult
-    open func subscribeSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
+    public func subscribeSync(to subject: String, asPartOf queue: String, _ handler: @escaping (NatsMessage) -> Void) throws -> NatsSubject {
         return try subSync(to: subject, asPartOf: queue, handler)
     }
 
