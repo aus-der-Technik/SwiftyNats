@@ -34,6 +34,11 @@ extension NatsClient: NatsConnection {
             RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
         } while self.connectionError == nil && self.state != .connected && Date().timeIntervalSince(startDate) < timeout
 
+        if Date().timeIntervalSince(startDate) >= timeout {
+            logger.error("Timeout while connecting.")
+            throw NatsConnectionError("Timeout while connecting.")
+        }
+        
         if let error = self.connectionError {
             logger.error("Error while connectig.")
             throw error
