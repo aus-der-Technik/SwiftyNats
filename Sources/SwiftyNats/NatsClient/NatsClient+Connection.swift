@@ -13,32 +13,36 @@ extension NatsClient: NatsConnection {
     
     /// Connect to the NATS server
     open func connect() throws {
-        logger.debug("Try to connect.")
-        guard self.state != .connected else {
-            logger.info("Already connected, skip connection.")
-            return
-        }
-        
-        self.dispatchGroup.enter()
-        
-        #if os(Linux)
-        thread = Thread { self.setupConnection() }
-        #else
-        thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
-        #endif
-        thread?.start()
-        self.dispatchGroup.wait()
+            logger.debug("Try to connect.")
+            guard self.state != .connected else {
+                logger.info("Already connected, skip connection.")
+                return
+            }
+            
+            self.dispatchGroup.enter()
+            
+            #if os(Linux)
+            thread = Thread { self.setupConnection() }
+            #else
+            thread = Thread(target: self, selector: #selector(self.setupConnection), object: nil)
+            #endif
+            thread?.start()
+            
+            while self.connectionError == nil && self.state != .connected {
+                // Attendre la fin de l'exécution du thread
+            }
+            
+            if let error = self.connectionError {
+                logger.error("Error while connectig.")
+                throw error
+            }
 
-        if let error = self.connectionError {
-            logger.error("Error while connectig.")
-            throw error
+            if self.server?.authRequired == true {
+                logger.warning("Authorisation is required.")
+                try self.authenticateWithServer()
+            }
         }
 
-        if self.server?.authRequired == true {
-            logger.warning("Authorisation is required.")
-            try self.authenticateWithServer()
-        }
-    }
 
     /// Disconnect from the NATS server
     open func disconnect() {
